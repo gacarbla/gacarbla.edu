@@ -88,6 +88,12 @@
             <svg class="icon" aria-hidden="true"><use href="#i-info" /></svg>
             No escribas tu contraseña en esta página: la ventana oficial se encarga.
           </p>
+          <p class="auth-card__note">
+            ¿No tienes cuenta?
+            <a href="https://api.gacarbla.es/users/register" target="_blank" rel="noopener noreferrer">
+              Créala en la ventana oficial
+            </a>.
+          </p>
           <p class="auth-status" id="adult-status" role="status" aria-live="polite"></p>
         </section>
 
@@ -145,12 +151,13 @@
         <p class="eyebrow">Un último paso</p>
         <h2 id="setup-title">Completa tu perfil de edu</h2>
         <p class="auth-setup__lede">
-          Hemos vinculado tu cuenta <strong id="setup-account"></strong>. Los datos que ya existen en ella se
-          autocompletan y quedan bloqueados; los que falten se guardan también en tu cuenta principal.
+          Hemos vinculado tu cuenta <strong id="setup-account"></strong>. La fecha de nacimiento se
+          sincroniza con tu cuenta principal. El nombre visible de edu es independiente: puedes usar
+          el que prefieras.
         </p>
         <form class="auth-form" id="profile-form" novalidate>
           <label class="auth-field">
-            <span>Nombre visible</span>
+            <span>Nombre visible en edu (opcional)</span>
             <input name="nickname" type="text" autocomplete="nickname" maxlength="60" />
             <small class="auth-field__hint" id="setup-name-hint"></small>
           </label>
@@ -174,9 +181,12 @@
         <div>
           <p class="eyebrow">Sesión iniciada</p>
           <h2 id="success-title">Has entrado.</h2>
-          <p>Hola, <strong id="success-name">alumno/a</strong>. La zona de aulas llegará con la beta.</p>
+          <p>Hola, <strong id="success-name">alumno/a</strong>. Ya puedes entrar en tus aulas.</p>
         </div>
-        <a class="btn btn--secondary" href="/">Volver a la portada</a>
+        <div class="auth-success__actions">
+          <a class="btn btn--primary" id="success-continue" href="/app/">Ir a mis aulas</a>
+          <a class="btn btn--secondary" href="/">Volver a la portada</a>
+        </div>
       </section>
     </main>
 

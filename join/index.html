@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es" data-age="kid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#faf6ec" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Invitación — gacarbla.edu</title>
+    <meta name="description" content="Acepta la invitación a un aula privada de gacarbla.edu." />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script type="module" src="/src/join.ts"></script>
+  </head>
+
+  <body class="app-body">
+    <header class="app-top">
+      <div class="container app-top__inner">
+        <a class="brand" href="/" aria-label="gacarbla.edu, volver a la portada">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40">
+              <rect width="40" height="40" rx="12" fill="currentColor" />
+              <path d="M10.5 14.2c4.1-2 7.1-2 9.5 0 2.4-2 5.4-2 9.5 0v13.1c-4.1-1.9-7.1-1.9-9.5 0-2.4-1.9-5.4-1.9-9.5 0V14.2Z" fill="#fffdf7" />
+              <path d="M20 14.5v12.5" stroke="#146b54" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M28.4 8.4c.4 2.3 1.5 3.4 3.8 3.8-2.3.4-3.4 1.5-3.8 3.8-.4-2.3-1.5-3.4-3.8-3.8 2.3-.4 3.4-1.5 3.8-3.8Z" fill="#f6c453" />
+            </svg>
+          </span>
+          <span class="brand__word">gacarbla<span class="brand__tld">.edu</span></span>
+        </a>
+      </div>
+    </header>
+
+    <main class="join-main">
+      <section class="join-card" aria-labelledby="join-title">
+        <p class="eyebrow">Invitación a un aula</p>
+        <h1 id="join-title">Un momento…</h1>
+        <p id="join-status" role="status" aria-live="polite">Comprobando tu invitación.</p>
+        <div id="join-actions"></div>
+      </section>
+    </main>
+  </body>
+</html>

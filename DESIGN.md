@@ -148,10 +148,19 @@ La pantalla `/login/` comparte tokens, tipografía, botones y tarjetas con la po
 Reglas:
 
 - No se piden credenciales de adultos en edu; se delega en la ventana oficial.
-- Si la cuenta principal no tiene fecha de nacimiento, no se muestra un error de soporte: se abre una pantalla para crear el perfil edu. Los datos existentes se autocompletan y quedan bloqueados; los que faltan se escriben en la cuenta principal. La cuenta principal es la fuente de verdad y nunca se sobrescribe desde edu.
+- Si la cuenta principal no tiene fecha de nacimiento, no se muestra un error de soporte: se abre una pantalla para crear el perfil edu. La fecha se autocompleta y queda bloqueada; si falta, se escribe en la cuenta principal. El **nombre visible de edu es independiente** y puede diferir del nombre o apodo de la cuenta API.
 - El alumnado sí tiene formulario propio, con etiquetas claras, autocompletado y errores específicos.
 - El estilo de edad se aplica al completar el acceso; no hay selector.
 - La API debe autorizar `https://edu.gacarbla.es` en `CORS_ORIGINS` y en `returnOrigins`, y ofrecer un puente de sesión entre orígenes: `session/restore` es same-origin y el refresh está atado al `jkt` del login.
+
+### Aplicación de aulas
+
+`/app/` es la aplicación privada. Usa las mismas claves visuales, los estilos por edad y un enrutado por hash (`#/aula/…`) para funcionar en GitHub Pages sin servidor. Incluye panel de aulas, temario con carpetas y páginas Markdown, publicación, comentarios, personas e invitaciones, ejercicios, boletín, mensajes, aprobaciones y solicitud de centro.
+
+- La sesión edu se guarda en `sessionStorage` solo con el refresh token; el access vive en memoria y se renueva con DPoP.
+- El nombre visible de edu es independiente del `displayName` de la cuenta API. Solo los datos legales que falten (como la fecha de nacimiento) se sincronizan con la cuenta principal.
+- Los enlaces de invitación son `/join/?code=…`; el código se muestra una sola vez.
+- La app oculta las acciones que el rol no puede hacer, pero la API sigue siendo la autoridad final.
 
 ## 10. Accesibilidad
 

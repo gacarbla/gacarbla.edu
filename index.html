@@ -96,9 +96,9 @@
 
         <div class="header__actions">
           <a class="btn btn--ghost header__login" href="/login/">Entrar</a>
-          <button class="btn btn--primary btn--sm header__cta" type="button" data-open-dialog="beta-dialog">
+          <a class="btn btn--primary btn--sm header__cta" href="/login/?next=/app/">
             Crear un aula
-          </button>
+          </a>
           <button class="icon-btn menu-trigger" type="button" data-open-dialog="menu-dialog" aria-haspopup="dialog" aria-label="Abrir menú">
             <svg class="icon" aria-hidden="true"><use href="#i-menu" /></svg>
           </button>
@@ -123,10 +123,10 @@
               Los adolescentes de 16–17 pueden crearla con aprobación familiar. No hay catálogo.
             </p>
             <div class="hero__actions">
-              <button class="btn btn--primary btn--lg" type="button" data-open-dialog="beta-dialog">
+              <a class="btn btn--primary btn--lg" href="/login/?next=/app/">
                 Crear mi aula
                 <svg class="icon" aria-hidden="true"><use href="#i-arrow-right" /></svg>
-              </button>
+              </a>
               <a class="btn btn--secondary btn--lg" href="/login/?mode=learner">Entrar con una invitación</a>
             </div>
             <ul class="hero__facts">
@@ -259,7 +259,7 @@
                 <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Acceso solo por invitación</li>
                 <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Gratis durante la beta</li>
               </ul>
-              <button class="btn btn--secondary" type="button" data-open-dialog="beta-dialog">Crear mi aula</button>
+              <a class="btn btn--secondary" href="/login/?next=/app/">Crear mi aula</a>
             </article>
 
             <article class="plan-card plan-card--center" data-reveal style="--reveal-delay: 0.1s">
@@ -393,7 +393,7 @@
               <p>Crea el aula, invita a tu grupo y tenlo todo en un sitio.</p>
             </div>
             <div class="cta-panel__actions">
-              <button class="btn btn--primary btn--lg" type="button" data-open-dialog="beta-dialog">Crear mi aula</button>
+              <a class="btn btn--primary btn--lg" href="/login/?next=/app/">Crear mi aula</a>
               <a class="btn btn--secondary btn--lg" href="/login/?mode=learner">Entrar con una invitación</a>
               <span>1 aula y hasta 12 plazas · Gratis durante la beta</span>
             </div>
@@ -438,7 +438,7 @@
 
           <nav class="footer__nav" aria-label="Enseñar">
             <h2>Enseñar</h2>
-            <button type="button" data-open-dialog="beta-dialog">Crear un aula</button>
+            <a href="/login/?next=/app/">Crear un aula</a>
             <a href="#centros">Programa para centros</a>
             <a href="mailto:hola@gacarbla.es">Contacto</a>
             <a href="https://github.com/gacarbla/gacarbla.edu" target="_blank" rel="noopener noreferrer">Contribuir</a>
@@ -491,7 +491,7 @@
         </nav>
 
         <div class="menu-panel__actions">
-          <button class="btn btn--primary btn--lg" type="button" data-open-dialog="beta-dialog">Crear un aula</button>
+          <a class="btn btn--primary btn--lg" href="/login/?next=/app/">Crear un aula</a>
           <a class="btn btn--secondary btn--lg" href="/login/?mode=learner">Entrar con una invitación</a>
         </div>
 
@@ -505,19 +505,18 @@
         <span class="beta-mark" aria-hidden="true">
           <svg class="icon"><use href="#i-spark" /></svg>
         </span>
-        <p class="eyebrow">Beta en preparación</p>
-        <h2 id="beta-title">La beta abre pronto.</h2>
+        <p class="eyebrow">Beta abierta</p>
+        <h2 id="beta-title">La beta ya está abierta.</h2>
         <p class="dialog__lede">
-          Estamos terminando las aulas, las invitaciones y el sistema de protección de menores. Si quieres crear un
-          aula o tienes una invitación, escríbenos y te avisamos.
+          Crea tu aula o entra con la invitación de tu docente. Estamos en acceso anticipado: si algo no funciona,
+          escríbenos y lo revisamos.
         </p>
         <div class="dialog__actions">
-          <a class="btn btn--primary" href="mailto:hola@gacarbla.es?subject=Quiero%20probar%20gacarbla.edu">
-            Avísame por email
-          </a>
+          <a class="btn btn--primary" href="/login/?next=/app/">Crear un aula</a>
+          <a class="btn btn--secondary" href="/login/">Entrar</a>
           <button class="btn btn--secondary" type="button" data-open-dialog="aula-dialog">Ver un aula de ejemplo</button>
         </div>
-        <p class="dialog__fine">Sin registro todavía. Sin spam.</p>
+        <p class="dialog__fine">Aulas privadas por invitación. Sin catálogo ni spam.</p>
       </div>
     </dialog>
 
@@ -553,7 +552,7 @@
         </p>
         <div class="dialog__actions">
           <button class="btn btn--secondary" type="button" data-close-dialog>Cerrar</button>
-          <button class="btn btn--primary" type="button" data-open-dialog="beta-dialog">Crear un aula</button>
+          <a class="btn btn--primary" href="/login/?next=/app/">Crear un aula</a>
         </div>
       </div>
     </dialog>

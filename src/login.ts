@@ -57,6 +57,17 @@ function friendlyError(error: unknown): string {
   return error instanceof Error ? error.message : 'No se pudo completar el acceso.';
 }
 
+function safeNextTarget(value: string | null): string | null {
+  if (!value || !value.startsWith('/') || value.startsWith('//')) return null;
+  try {
+    const url = new URL(value, window.location.origin);
+    if (url.origin !== window.location.origin) return null;
+    return `${url.pathname}${url.search}${url.hash}`;
+  } catch {
+    return null;
+  }
+}
+
 function initLogin(): void {
   const adultButton = document.querySelector<HTMLButtonElement>('#users-login');
   const adultRedirect = document.querySelector<HTMLButtonElement>('#users-login-redirect');
@@ -78,6 +89,8 @@ function initLogin(): void {
   const setupBirth = setupForm?.querySelector<HTMLInputElement>('input[name="birthDate"]');
   const setupNameHint = document.querySelector<HTMLElement>('#setup-name-hint');
   const setupAccount = document.querySelector<HTMLElement>('#setup-account');
+  const successContinue = document.querySelector<HTMLAnchorElement>('#success-continue');
+  const next = safeNextTarget(new URLSearchParams(window.location.search).get('next'));
   const aliasInput = learnerForm?.querySelector<HTMLInputElement>('input[name="alias"]');
   const pinInput = learnerForm?.querySelector<HTMLInputElement>('input[name="pin"]');
   const answerInput = learnerForm?.querySelector<HTMLInputElement>('input[name="answer"]');
@@ -101,6 +114,10 @@ function initLogin(): void {
 
   const showSuccess = (name: string): void => {
     if (successName) successName.textContent = name;
+    if (successContinue) {
+      successContinue.href = next ?? '/app/';
+      successContinue.textContent = next?.startsWith('/join') ? 'Aceptar invitación' : 'Ir a mis aulas';
+    }
     if (cards) cards.hidden = true;
     if (setup) setup.hidden = true;
     if (success) {
@@ -111,6 +128,9 @@ function initLogin(): void {
         behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
         block: 'center',
       });
+    }
+    if (next) {
+      window.setTimeout(() => window.location.assign(next), 550);
     }
   };
 
@@ -128,13 +148,11 @@ function initLogin(): void {
       setupAccount.textContent = result.me.email ?? result.me.username;
     }
     if (setupName) {
-      const mainName = result.me.display_name?.trim() ?? '';
-      setupName.value = mainName;
-      setupName.readOnly = Boolean(mainName);
+      setupName.value = '';
+      setupName.readOnly = false;
       if (setupNameHint) {
-        setupNameHint.textContent = mainName
-          ? 'Viene de tu cuenta gacarbla y queda bloqueado.'
-          : 'Opcional. Si lo escribes, se guardará en tu cuenta gacarbla.';
+        setupNameHint.textContent =
+          'Opcional. Puede ser distinto del nombre visible de tu cuenta gacarbla.';
       }
     }
     if (setupBirth) {
@@ -236,8 +254,7 @@ function initLogin(): void {
 
     const data = new FormData(setupForm);
     const birthDate = String(data.get('birthDate') ?? '').trim();
-    const nicknameRaw = String(data.get('nickname') ?? '').trim();
-    const nickname = setupName?.readOnly ? undefined : nicknameRaw || undefined;
+    const nickname = String(data.get('nickname') ?? '').trim() || undefined;
 
     if (!birthDate) {
       setStatus(setupStatus, 'Escribe tu fecha de nacimiento.', 'error');
