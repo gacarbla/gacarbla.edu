@@ -1,0 +1,245 @@
+/* =========================================================
+   Estilos de edad
+   La portada pública sin sesión arranca en `kid` (10 años).
+   Cuando la API identifica a la persona, aplica `data-age`.
+   No hay selector visible ni cambio a mitad de página.
+   ========================================================= */
+
+html[data-age='kid'] {
+  --scale: 1.125;
+  --deco-opacity: 1;
+  --rotate-kid: -1deg;
+  --section-y: clamp(4.75rem, 9vw, 8rem);
+}
+
+html[data-age='kid'] body {
+  line-height: 1.7;
+}
+
+html[data-age='kid'] h1,
+html[data-age='kid'] h2 {
+  font-weight: 750;
+}
+
+html[data-age='teen'] {
+  --scale: 1.0625;
+  --r-sm: 14px;
+  --r-md: 20px;
+  --r-lg: 28px;
+  --r-xl: 36px;
+  --deco-opacity: 0.45;
+  --rotate-kid: -0.5deg;
+  --section-y: clamp(4.5rem, 8vw, 7.25rem);
+}
+
+html[data-age='adult'] {
+  --scale: 1;
+  --r-sm: 12px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 30px;
+  --deco-opacity: 0;
+  --rotate-kid: 0deg;
+  --section-y: clamp(4.25rem, 7.5vw, 6.75rem);
+  --measure: 58ch;
+}
+
+html[data-age='adult'] body {
+  line-height: 1.6;
+}
+
+html[data-age='adult'] h1,
+html[data-age='adult'] h2 {
+  font-weight: 650;
+}
+
+html[data-age='adult'] .cta-panel__doodle {
+  display: none;
+}
+
+html[data-age='adult'] .demo-card {
+  transform: none;
+}
+
+html[data-age='senior'] {
+  --scale: 1.25;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 18px;
+  --r-xl: 22px;
+  --deco-opacity: 0;
+  --rotate-kid: 0deg;
+  --section-y: clamp(5.5rem, 9vw, 8rem);
+  --measure: 52ch;
+  --ink-soft: #33413b;
+  --ink-faint: #46544e;
+  --line: #cfc8b8;
+  --line-strong: #a9a190;
+  --shadow-sm: none;
+  --shadow-md: 0 2px 0 rgb(20 32 28 / 0.08);
+  --header-h: 5rem;
+}
+
+html[data-age='senior'] body {
+  line-height: 1.8;
+}
+
+html[data-age='senior'] h1 {
+  font-size: clamp(2.5rem, 4.8vw, 4.1rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+html[data-age='senior'] h2 {
+  font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+html[data-age='senior'] h3 {
+  letter-spacing: -0.01em;
+}
+
+html[data-age='senior'] .eyebrow {
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+html[data-age='senior'] .cta-panel__doodle {
+  display: none;
+}
+
+html[data-age='senior'] .demo-card {
+  transform: none;
+}
+
+html[data-age='senior'] .brand__word {
+  font-size: 1.4rem;
+}
+
+html[data-age='senior'] .header__nav a,
+html[data-age='senior'] .footer__nav a,
+html[data-age='senior'] .footer__nav button,
+html[data-age='senior'] .faq__intro a,
+html[data-age='senior'] .text-link {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+html[data-age='senior'] .header__nav a {
+  text-decoration-thickness: 1px;
+}
+
+html[data-age='senior'] .header__nav a:hover {
+  text-decoration-thickness: 2px;
+}
+
+html[data-age='senior'] .btn {
+  min-height: 3.3rem;
+  font-size: 1rem;
+}
+
+html[data-age='senior'] .btn--sm {
+  min-height: 3rem;
+  font-size: 0.95rem;
+}
+
+html[data-age='senior'] .icon-btn {
+  min-width: 3rem;
+  min-height: 3rem;
+}
+
+html[data-age='senior'] .plan-card__tag,
+html[data-age='senior'] .demo-card__meta,
+html[data-age='senior'] .demo-card__bar {
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+
+html[data-age='senior'] .footer__bottom {
+  font-size: 0.85rem;
+}
+
+/* ---------- Alto contraste del sistema ---------- */
+
+@media (prefers-contrast: more) {
+  :root:root {
+    --body-bg: #ffffff;
+    --paper: #ffffff;
+    --cream: #ffffff;
+    --cream-deep: #f0f0e8;
+    --surface: #ffffff;
+    --surface-2: #f2f2ea;
+    --ink: #0a0f0d;
+    --ink-strong: #000000;
+    --ink-soft: #24302b;
+    --ink-faint: #35423c;
+    --line: #7b857f;
+    --line-strong: #4f5a54;
+    --primary: #084b39;
+    --primary-hover: #063a2c;
+    --green-700: #084b39;
+    --green-800: #063a2c;
+    --green-50: #e3f2ea;
+    --green-100: #c9e6d8;
+    --shadow-sm: none;
+    --shadow-md: 0 0 0 1px #4f5a54;
+    --shadow-lg: 0 0 0 2px #4f5a54;
+  }
+
+  .site-header {
+    background: #ffffff;
+    border-bottom-color: var(--line);
+  }
+
+  .demo-card,
+  .plan-card,
+  .program-rule,
+  .dialog__panel {
+    border-width: 2px;
+  }
+
+  .btn {
+    border-width: 2px;
+    border-color: currentColor;
+  }
+}
+
+/* ---------- Movimiento reducido del sistema ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- Cabecera en pantallas estrechas ---------- */
+
+@media (max-width: 720px) {
+  html[data-age='senior'] .brand__word {
+    font-size: 1.1rem;
+  }
+
+  html[data-age='senior'] .brand__mark {
+    width: 2.15rem;
+    height: 2.15rem;
+  }
+}
+
+@media (max-width: 350px) {
+  html[data-age='senior'] .brand__word {
+    display: none;
+  }
+}

@@ -1,0 +1,561 @@
+<!doctype html>
+<html lang="es" data-age="kid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#faf6ec" />
+
+    <title>gacarbla.edu — Tu grupo. Tu temario. Un aula privada.</title>
+    <meta
+      name="description"
+      content="Crea un aula privada, ordena el temario e invita a tu grupo. Sin catálogo: solo entra quien tú invitas. 1 aula y hasta 12 plazas."
+    />
+    <link rel="canonical" href="https://edu.gacarbla.es/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="gacarbla.edu" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:url" content="https://edu.gacarbla.es/" />
+    <meta property="og:title" content="gacarbla.edu — Tu grupo. Tu temario. Un aula privada." />
+    <meta
+      property="og:description"
+      content="Crea un aula privada, ordena el temario e invita a tu grupo. Sin catálogo: solo entra quien tú invitas."
+    />
+    <meta property="og:image" content="https://edu.gacarbla.es/og.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="gacarbla.edu: tu grupo, tu temario, un aula privada." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="gacarbla.edu — Tu grupo. Tu temario. Un aula privada." />
+    <meta
+      name="twitter:description"
+      content="Crea un aula privada, ordena el temario e invita a tu grupo. Sin catálogo: solo entra quien tú invitas."
+    />
+    <meta name="twitter:image" content="https://edu.gacarbla.es/og.png" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/images/prism-light.webp" as="image" type="image/webp" />
+
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+
+  <body>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <svg class="svg-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" /></symbol>
+      <symbol id="i-arrow-down" viewBox="0 0 24 24"><path d="M12 4v16M6 14l6 6 6-6" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7" /></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.5c.7 4.3 2.7 6.3 7 7-4.3.7-6.3 2.7-7 7-.7-4.3-2.7-6.3-7-7 4.3-.7 6.3-2.7 7-7Z" fill="currentColor" stroke="none" /></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></symbol>
+      <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8" /></symbol>
+      <symbol id="i-pencil" viewBox="0 0 24 24"><path d="m4 20 4-1 11-11a2.1 2.1 0 0 0-3-3L5 16l-1 4Z" /><path d="m14 6 3 3" /></symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 5 6v6c0 4.4 3 7.5 7 9 4-1.5 7-4.6 7-9V6l-7-3Z" /><path d="m9 12 2 2 4-4" /></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2" /><path d="M3.5 20c0-3.3 2.5-5.5 5.5-5.5s5.5 2.2 5.5 5.5M16 5.5a3.2 3.2 0 0 1 0 6.2M17 14.5c2.2.4 3.5 2.2 3.5 4.8" /></symbol>
+      <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z" /><circle cx="12" cy="12" r="3" /></symbol>
+      <symbol id="i-github" viewBox="0 0 24 24"><path fill="currentColor" stroke="none" d="M12 .8a11.2 11.2 0 0 0-3.5 21.8c.6.1.8-.2.8-.5v-2c-3.1.7-3.8-1.3-3.8-1.3-.5-1.3-1.3-1.6-1.3-1.6-1-.7.1-.7.1-.7 1.1.1 1.7 1.2 1.7 1.2 1 1.7 2.6 1.2 3.3.9.1-.7.4-1.2.7-1.5-2.5-.3-5.1-1.2-5.1-5.5 0-1.2.4-2.2 1.1-3-.1-.3-.5-1.4.1-2.9 0 0 1-.3 3.1 1.2a10.7 10.7 0 0 1 5.6 0c2.1-1.5 3.1-1.2 3.1-1.2.6 1.5.2 2.6.1 2.9.7.8 1.1 1.8 1.1 3 0 4.3-2.6 5.2-5.1 5.5.4.3.8 1 .8 2.1v3.1c0 .3.2.6.8.5A11.2 11.2 0 0 0 12 .8Z" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none" /></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5.5C7 4 9.5 4 12 5.5 14.5 4 17 4 20 5.5v14c-3-1.5-5.5-1.5-8 0-2.5-1.5-5-1.5-8 0v-14Z" /><path d="M12 5.5v14" /></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z" /><path d="m3 13 9 5 9-5" /></symbol>
+    </svg>
+
+    <noscript>
+      <p class="noscript-note">
+        Los diálogos y la vista previa necesitan JavaScript. El contenido y los enlaces funcionan igual.
+      </p>
+    </noscript>
+
+    <header class="site-header" data-header>
+      <div class="container header__inner">
+        <a class="brand" href="/" aria-label="gacarbla.edu, ir al inicio">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40">
+              <rect width="40" height="40" rx="12" fill="currentColor" />
+              <path d="M10.5 14.2c4.1-2 7.1-2 9.5 0 2.4-2 5.4-2 9.5 0v13.1c-4.1-1.9-7.1-1.9-9.5 0-2.4-1.9-5.4-1.9-9.5 0V14.2Z" fill="#fffdf7" />
+              <path d="M20 14.5v12.5" stroke="#146b54" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M28.4 8.4c.4 2.3 1.5 3.4 3.8 3.8-2.3.4-3.4 1.5-3.8 3.8-.4-2.3-1.5-3.4-3.8-3.8 2.3-.4 3.4-1.5 3.8-3.8Z" fill="#f6c453" />
+            </svg>
+          </span>
+          <span class="brand__word">gacarbla<span class="brand__tld">.edu</span></span>
+        </a>
+
+        <nav class="header__nav" aria-label="Principal">
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#centros">Centros</a>
+          <a href="#seguridad">Seguridad</a>
+          <a href="#preguntas">Preguntas</a>
+        </nav>
+
+        <div class="header__actions">
+          <a class="btn btn--ghost header__login" href="/login/">Entrar</a>
+          <button class="btn btn--primary btn--sm header__cta" type="button" data-open-dialog="beta-dialog">
+            Crear un aula
+          </button>
+          <button class="icon-btn menu-trigger" type="button" data-open-dialog="menu-dialog" aria-haspopup="dialog" aria-label="Abrir menú">
+            <svg class="icon" aria-hidden="true"><use href="#i-menu" /></svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main id="contenido">
+      <!-- HERO -->
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="container hero__grid">
+          <div class="hero__copy">
+            <p class="eyebrow eyebrow--spark">
+              <svg class="icon" aria-hidden="true"><use href="#i-spark" /></svg>
+              Aulas privadas para enseñar y aprender
+            </p>
+            <h1 id="hero-title">
+              Tu grupo. Tu temario. Un aula <span class="mark">privada</span>.
+            </h1>
+            <p class="hero__lede">
+              Cualquier adulto puede crear un aula: ordena el temario, comparte una invitación y reúne a su grupo.
+              Los adolescentes de 16–17 pueden crearla con aprobación familiar. No hay catálogo.
+            </p>
+            <div class="hero__actions">
+              <button class="btn btn--primary btn--lg" type="button" data-open-dialog="beta-dialog">
+                Crear mi aula
+                <svg class="icon" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+              </button>
+              <a class="btn btn--secondary btn--lg" href="/login/?mode=learner">Entrar con una invitación</a>
+            </div>
+            <ul class="hero__facts">
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> 1 aula y hasta 12 plazas</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg> Solo por invitación</li>
+              <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Gratis durante la beta</li>
+            </ul>
+          </div>
+
+          <div class="hero__visual" role="group" aria-label="Ejemplo de lección dentro de un aula">
+            <div class="demo-card">
+              <div class="demo-card__bar">
+                <span class="demo-card__dots" aria-hidden="true"><i></i><i></i><i></i></span>
+                <span class="demo-card__bar-title">Aula de Ciencias · La luz y el color</span>
+                <span class="badge">Ejemplo</span>
+              </div>
+              <div class="demo-card__body">
+                <div class="demo-card__meta">
+                  <span class="chip">Lección 1</span>
+                  <span><svg class="icon" aria-hidden="true"><use href="#i-clock" /></svg> 4 min</span>
+                </div>
+                <p class="demo-card__title">¿Por qué el cielo es azul?</p>
+                <p class="demo-card__text">
+                  La luz del sol viaja en muchos colores. Al chocar con el aire, el azul se dispersa más que los demás.
+                </p>
+
+                <figure class="demo-card__media">
+                  <picture>
+                    <source srcset="/images/prism-light.webp" type="image/webp" />
+                    <img
+                      src="/images/prism-light.jpg"
+                      width="1200"
+                      height="675"
+                      alt="Un prisma de vidrio separa un haz de luz blanca en los colores del espectro."
+                      loading="eager"
+                      decoding="async"
+                    />
+                  </picture>
+                  <figcaption class="demo-card__credit">
+                    Foto:
+                    <a href="https://commons.wikimedia.org/wiki/File:Prism_flat_rainbow_(cropped).jpg" target="_blank" rel="noopener noreferrer">Kelvinsong</a>
+                    · CC0
+                  </figcaption>
+                </figure>
+
+                <div class="reto">
+                  <span class="reto__label">Reto rápido</span>
+                  <p>¿Qué color se dispersa más al chocar con el aire?</p>
+                  <div class="reto__options" data-reto role="group" aria-label="Respuestas del reto">
+                    <button class="reto__option" type="button" data-reto-answer="rojo">Rojo</button>
+                    <button class="reto__option" type="button" data-reto-answer="azul">Azul</button>
+                    <button class="reto__option" type="button" data-reto-answer="verde">Verde</button>
+                  </div>
+                  <p class="reto__feedback" data-reto-feedback aria-live="polite"></p>
+                </div>
+
+                <div class="demo-card__foot">
+                  <span><svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg> Aula privada</span>
+                  <button class="text-link" type="button" data-open-dialog="aula-dialog">
+                    Ver el aula completa
+                    <svg class="icon" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <svg class="doodle doodle--star" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+              <path d="M24 3c1.4 10.6 6.7 15.9 17.3 17.3C30.7 21.7 25.4 27 24 37.6 22.6 27 17.3 21.7 6.7 20.3 17.3 18.9 22.6 13.6 24 3Z" fill="#f6c453" />
+            </svg>
+          </div>
+        </div>
+      </section>
+
+      <!-- CÓMO FUNCIONA -->
+      <section class="section steps-section" id="como-funciona" aria-labelledby="steps-title">
+        <div class="container">
+          <header class="section-head section-head--split" data-reveal>
+            <div>
+              <p class="eyebrow">Cómo funciona</p>
+              <h2 id="steps-title">De la idea al grupo, sin montar un curso.</h2>
+            </div>
+            <p class="section-head__lede">
+              No hay catálogo ni configuración. Solo un aula y las personas que invitas.
+            </p>
+          </header>
+
+          <ol class="steps-strip">
+            <li data-reveal>
+              <span class="steps-strip__num">01</span>
+              <h3>Crea el aula</h3>
+              <p>Ponle nombre y elige el grupo. Empiezas con 1 aula y hasta 12 plazas.</p>
+            </li>
+            <li data-reveal style="--reveal-delay: 0.08s">
+              <span class="steps-strip__num">02</span>
+              <h3>Ordena el temario</h3>
+              <p>Módulos, materiales, avisos y retos. Tú decides qué va primero.</p>
+            </li>
+            <li data-reveal style="--reveal-delay: 0.16s">
+              <span class="steps-strip__num">03</span>
+              <h3>Invita y acompaña</h3>
+              <p>Comparte una invitación privada. Solo entra quien tú decidas.</p>
+            </li>
+          </ol>
+
+          <p class="steps-section__note">
+            ¿Necesitas más aulas o plazas? <a href="#centros">El programa para centros lo permite.</a>
+          </p>
+        </div>
+      </section>
+
+      <!-- LÍMITES Y CENTROS -->
+      <section class="section centers" id="centros" aria-labelledby="centers-title">
+        <div class="container">
+          <header class="section-head section-head--center" data-reveal>
+            <p class="eyebrow">Límites claros</p>
+            <h2 id="centers-title">Un aula para empezar. Un programa para centros.</h2>
+            <p class="section-head__lede">
+              El límite mantiene el aula como un grupo cercano. Los centros que se comprometen pueden ampliarlo.
+            </p>
+          </header>
+
+          <div class="plan-grid">
+            <article class="plan-card" data-reveal>
+              <p class="plan-card__tag">Cuenta personal</p>
+              <p class="plan-card__big"><span>1</span> aula</p>
+              <p class="plan-card__sub">Hasta 12 plazas de alumno</p>
+              <p class="plan-card__why">Doce plazas para que el aula siga siendo un grupo, no un curso masivo.</p>
+              <ul class="tick-list">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Cualquier cuenta adulta puede crear la suya</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Acceso solo por invitación</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Gratis durante la beta</li>
+              </ul>
+              <button class="btn btn--secondary" type="button" data-open-dialog="beta-dialog">Crear mi aula</button>
+            </article>
+
+            <article class="plan-card plan-card--center" data-reveal style="--reveal-delay: 0.1s">
+              <p class="plan-card__tag">Programa para centros</p>
+              <p class="plan-card__big">Sin límites</p>
+              <p class="plan-card__sub">Para todas las cuentas que el centro registre como docentes</p>
+              <p class="plan-card__why">
+                El centro se compromete legalmente a seguir pautas rigurosas de seguridad y protección de menores.
+              </p>
+              <ul class="tick-list">
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Sin límite de aulas ni de plazas</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Condiciones y seguimiento del programa</li>
+                <li><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg> Las aulas siguen siendo privadas</li>
+              </ul>
+              <a class="btn btn--primary" href="mailto:hola@gacarbla.es?subject=Programa%20para%20centros">
+                Solicitar el programa
+              </a>
+            </article>
+          </div>
+
+          <div class="program-rule" data-reveal>
+            <span class="program-rule__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield" /></svg></span>
+            <p><strong>3 avisos leves o 1 aviso grave:</strong> se retiran todas las licencias y se bloquea el acceso al programa.</p>
+            <span class="program-rule__note">Condiciones completas antes de la beta.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- PRIVACIDAD Y MENORES -->
+      <section class="section trust" id="seguridad" aria-labelledby="trust-title">
+        <div class="container trust__grid">
+          <div class="trust__intro" data-reveal>
+            <p class="eyebrow eyebrow--light">Privacidad y menores</p>
+            <h2 id="trust-title">Quién puede entrar y quién puede ver.</h2>
+            <p>Las aulas no son públicas. No hay directorio ni buscador.</p>
+          </div>
+
+          <ul class="trust__list" data-reveal style="--reveal-delay: 0.08s">
+            <li>
+              <span class="trust__num">01</span>
+              <div><strong>Solo por invitación</strong><span>Sin enlace no se entra. No apareces en ningún catálogo.</span></div>
+            </li>
+            <li>
+              <span class="trust__num">02</span>
+              <div><strong>El docente decide</strong><span>Quién entra, qué ve y qué comparte.</span></div>
+            </li>
+            <li>
+              <span class="trust__num">03</span>
+              <div><strong>Sin anuncios dirigidos</strong><span>No usamos datos de menores para publicidad ni perfiles comerciales.</span></div>
+            </li>
+            <li>
+              <span class="trust__num">04</span>
+              <div><strong>Lectura adaptada</strong><span>La letra y el espacio se ajustan a tu edad al entrar. Sin botones.</span></div>
+            </li>
+          </ul>
+        </div>
+        <div class="container trust__note">
+          <p>
+            <svg class="icon" aria-hidden="true"><use href="#i-info" /></svg>
+            El sistema completo de protección de menores está en construcción. Publicaremos la política antes de abrir.
+            Hoy no hay registro ni datos reales.
+          </p>
+          <p class="trust__kid">Si algo te parece raro, díselo a tu docente.</p>
+        </div>
+      </section>
+
+      <!-- FAQ -->
+      <section class="section faq" id="preguntas" aria-labelledby="faq-title">
+        <div class="container faq__grid">
+          <div class="faq__intro" data-reveal>
+            <p class="eyebrow">Preguntas</p>
+            <h2 id="faq-title">Lo que conviene saber.</h2>
+            <p>
+              Si te queda algo, escríbenos a <a href="mailto:hola@gacarbla.es">hola@gacarbla.es</a>. Contestamos
+              personas.
+            </p>
+          </div>
+
+          <div class="faq__list" data-reveal style="--reveal-delay: 0.08s">
+            <details>
+              <summary>¿Quién puede crear un aula?</summary>
+              <p>
+                Las cuentas adultas (18+) pueden crear 1 aula con hasta 12 plazas. Los perfiles de 16–17 pueden
+                crearla con aprobación de su tutor; los menores de 16 entran como alumnos con una invitación.
+              </p>
+            </details>
+            <details>
+              <summary>¿Quién puede entrar?</summary>
+              <p>Solo quien recibe una invitación. No hay catálogo, buscador ni aulas públicas.</p>
+            </details>
+            <details>
+              <summary>¿Qué pasa si mi centro necesita más?</summary>
+              <p>
+                Puede solicitar el programa para centros. Si se adhiere y cumple el compromiso legal, se eliminan los
+                límites para todas las cuentas docentes que registre.
+              </p>
+            </details>
+            <details>
+              <summary>¿Qué pasa si un centro incumple?</summary>
+              <p>Con 3 avisos leves o 1 aviso grave se retiran todas las licencias y se bloquea el acceso al programa.</p>
+            </details>
+            <details>
+              <summary>¿Qué datos guardáis?</summary>
+              <p>
+                Esta portada no usa cookies de seguimiento ni analítica. No hay registro ni datos reales. La política
+                completa se publicará antes de la beta.
+              </p>
+            </details>
+            <details>
+              <summary>¿Cuánto cuesta?</summary>
+              <p>Gratis durante la beta. Si algún día cuesta, lo sabrás antes de pagar.</p>
+            </details>
+            <details>
+              <summary>¿La web cambia según mi edad?</summary>
+              <p>
+                Al identificarte, se aplica el estilo de tu edad. Sin sesión se usa el estilo de 10 años. No hay ningún
+                selector que cambie la página en directo.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section cta" aria-labelledby="cta-title">
+        <div class="container">
+          <div class="cta-panel" data-reveal>
+            <div class="cta-panel__copy">
+              <p class="eyebrow">Tu turno</p>
+              <h2 id="cta-title">Tu próxima clase empieza con un aula.</h2>
+              <p>Crea el aula, invita a tu grupo y tenlo todo en un sitio.</p>
+            </div>
+            <div class="cta-panel__actions">
+              <button class="btn btn--primary btn--lg" type="button" data-open-dialog="beta-dialog">Crear mi aula</button>
+              <a class="btn btn--secondary btn--lg" href="/login/?mode=learner">Entrar con una invitación</a>
+              <span>1 aula y hasta 12 plazas · Gratis durante la beta</span>
+            </div>
+            <svg class="cta-panel__doodle" viewBox="0 0 160 160" aria-hidden="true">
+              <circle cx="80" cy="80" r="58" fill="none" stroke="#14201c" stroke-width="2" stroke-dasharray="2 12" stroke-linecap="round" opacity=".35" />
+              <path d="M80 30c3 26 13 36 39 39-26 3-36 13-39 39-3-26-13-36-39-39 26-3 36-13 39-39Z" fill="#14201c" opacity=".08" />
+            </svg>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <div class="footer__top">
+          <div class="footer__brand">
+            <a class="brand brand--footer" href="/" aria-label="gacarbla.edu, ir al inicio">
+              <span class="brand__mark" aria-hidden="true">
+                <svg viewBox="0 0 40 40">
+                  <rect width="40" height="40" rx="12" fill="currentColor" />
+                  <path d="M10.5 14.2c4.1-2 7.1-2 9.5 0 2.4-2 5.4-2 9.5 0v13.1c-4.1-1.9-7.1-1.9-9.5 0-2.4-1.9-5.4-1.9-9.5 0V14.2Z" fill="#fffdf7" />
+                  <path d="M20 14.5v12.5" stroke="#146b54" stroke-width="1.8" stroke-linecap="round" />
+                  <path d="M28.4 8.4c.4 2.3 1.5 3.4 3.8 3.8-2.3.4-3.4 1.5-3.8 3.8-.4-2.3-1.5-3.4-3.8-3.8 2.3-.4 3.4-1.5 3.8-3.8Z" fill="#f6c453" />
+                </svg>
+              </span>
+              <span class="brand__word">gacarbla<span class="brand__tld">.edu</span></span>
+            </a>
+            <p>Aulas privadas para enseñar y aprender.</p>
+            <a class="footer__github" href="https://github.com/gacarbla/gacarbla.edu" target="_blank" rel="noopener noreferrer">
+              <svg class="icon" aria-hidden="true"><use href="#i-github" /></svg>
+              Código abierto en GitHub
+            </a>
+          </div>
+
+          <nav class="footer__nav" aria-label="Aulas">
+            <h2>Aulas</h2>
+            <a href="#como-funciona">Cómo funciona</a>
+            <a href="#seguridad">Seguridad</a>
+            <a href="#preguntas">Preguntas</a>
+            <button type="button" data-open-dialog="aula-dialog">Ver un aula de ejemplo</button>
+          </nav>
+
+          <nav class="footer__nav" aria-label="Enseñar">
+            <h2>Enseñar</h2>
+            <button type="button" data-open-dialog="beta-dialog">Crear un aula</button>
+            <a href="#centros">Programa para centros</a>
+            <a href="mailto:hola@gacarbla.es">Contacto</a>
+            <a href="https://github.com/gacarbla/gacarbla.edu" target="_blank" rel="noopener noreferrer">Contribuir</a>
+          </nav>
+
+          <div class="footer__nav">
+            <h2>Proyecto</h2>
+            <a href="https://github.com/gacarbla/gacarbla.edu/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Licencia MIT</a>
+            <button type="button" data-open-dialog="beta-dialog">Estado de la beta</button>
+            <a href="https://github.com/gacarbla/gacarbla.edu" target="_blank" rel="noopener noreferrer">GitHub</a>
+          </div>
+        </div>
+
+        <div class="footer__bottom">
+          <p>© <span data-year>2026</span> gacarbla.edu · Hecho con cuidado en España</p>
+          <p class="footer__privacy">
+            <span class="footer__dot" aria-hidden="true"></span>
+            Sin cookies de seguimiento ni analítica de terceros.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- MENÚ MÓVIL -->
+    <dialog class="dialog dialog--menu" id="menu-dialog" aria-labelledby="menu-title">
+      <div class="menu-panel">
+        <header class="menu-panel__head">
+          <h2 id="menu-title" class="sr-only">Menú</h2>
+          <a class="brand" href="/" aria-label="gacarbla.edu, ir al inicio">
+            <span class="brand__mark" aria-hidden="true">
+              <svg viewBox="0 0 40 40">
+                <rect width="40" height="40" rx="12" fill="currentColor" />
+                <path d="M10.5 14.2c4.1-2 7.1-2 9.5 0 2.4-2 5.4-2 9.5 0v13.1c-4.1-1.9-7.1-1.9-9.5 0-2.4-1.9-5.4-1.9-9.5 0V14.2Z" fill="#fffdf7" />
+                <path d="M20 14.5v12.5" stroke="#146b54" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M28.4 8.4c.4 2.3 1.5 3.4 3.8 3.8-2.3.4-3.4 1.5-3.8 3.8-.4-2.3-1.5-3.4-3.8-3.8 2.3-.4 3.4-1.5 3.8-3.8Z" fill="#f6c453" />
+              </svg>
+            </span>
+            <span class="brand__word">gacarbla<span class="brand__tld">.edu</span></span>
+          </a>
+          <button class="icon-btn" type="button" data-close-dialog aria-label="Cerrar menú">
+            <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+          </button>
+        </header>
+
+        <nav class="menu-nav" aria-label="Menú principal">
+          <a href="#como-funciona">Cómo funciona</a>
+          <a href="#centros">Programa para centros</a>
+          <a href="#seguridad">Seguridad</a>
+          <a href="#preguntas">Preguntas frecuentes</a>
+        </nav>
+
+        <div class="menu-panel__actions">
+          <button class="btn btn--primary btn--lg" type="button" data-open-dialog="beta-dialog">Crear un aula</button>
+          <a class="btn btn--secondary btn--lg" href="/login/?mode=learner">Entrar con una invitación</a>
+        </div>
+
+        <p class="menu-panel__fine">Aulas privadas para enseñar y aprender.</p>
+      </div>
+    </dialog>
+
+    <!-- BETA -->
+    <dialog class="dialog dialog--beta" id="beta-dialog" aria-labelledby="beta-title">
+      <div class="dialog__panel dialog__panel--center">
+        <span class="beta-mark" aria-hidden="true">
+          <svg class="icon"><use href="#i-spark" /></svg>
+        </span>
+        <p class="eyebrow">Beta en preparación</p>
+        <h2 id="beta-title">La beta abre pronto.</h2>
+        <p class="dialog__lede">
+          Estamos terminando las aulas, las invitaciones y el sistema de protección de menores. Si quieres crear un
+          aula o tienes una invitación, escríbenos y te avisamos.
+        </p>
+        <div class="dialog__actions">
+          <a class="btn btn--primary" href="mailto:hola@gacarbla.es?subject=Quiero%20probar%20gacarbla.edu">
+            Avísame por email
+          </a>
+          <button class="btn btn--secondary" type="button" data-open-dialog="aula-dialog">Ver un aula de ejemplo</button>
+        </div>
+        <p class="dialog__fine">Sin registro todavía. Sin spam.</p>
+      </div>
+    </dialog>
+
+    <!-- AULA DE EJEMPLO -->
+    <dialog class="dialog dialog--aula" id="aula-dialog" aria-labelledby="aula-title">
+      <div class="dialog__panel">
+        <header class="dialog__head">
+          <span class="badge">Ejemplo de aula</span>
+          <button class="icon-btn" type="button" data-close-dialog aria-label="Cerrar vista previa">
+            <svg class="icon" aria-hidden="true"><use href="#i-close" /></svg>
+          </button>
+        </header>
+        <h2 id="aula-title">Aula de Ciencias · Grupo de los jueves</h2>
+        <p class="dialog__lede">
+          Un aula privada de ejemplo. Así se organiza el temario y lo que ve el grupo cuando entra con una invitación.
+        </p>
+        <dl class="info-grid">
+          <div><dt>Docente</dt><dd>Marta R.</dd></div>
+          <div><dt>Plazas</dt><dd>12 plazas</dd></div>
+          <div><dt>Acceso</dt><dd>Invitación privada</dd></div>
+        </dl>
+        <div class="aula-dialog__temario">
+          <p class="aula-card__label">Temario</p>
+          <ul>
+            <li><span class="aula-card__num">01</span><span><strong>La luz y el color</strong><span>3 lecciones · 24 min</span></span></li>
+            <li><span class="aula-card__num">02</span><span><strong>El aire que respiramos</strong><span>4 lecciones · 35 min</span></span></li>
+            <li><span class="aula-card__num">03</span><span><strong>Experimento final</strong><span>Reto en equipo · 1 semana</span></span></li>
+          </ul>
+        </div>
+        <p class="dialog__note">
+          <svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg>
+          Este es un aula de muestra. No hay cursos públicos ni datos reales de alumnos.
+        </p>
+        <div class="dialog__actions">
+          <button class="btn btn--secondary" type="button" data-close-dialog>Cerrar</button>
+          <button class="btn btn--primary" type="button" data-open-dialog="beta-dialog">Crear un aula</button>
+        </div>
+      </div>
+    </dialog>
+  </body>
+</html>
