@@ -21,6 +21,8 @@ export default defineConfig({
       input: {
         main: resolve(process.cwd(), 'index.html'),
         login: resolve(process.cwd(), 'login/index.html'),
+        app: resolve(process.cwd(), 'app/index.html'),
+        join: resolve(process.cwd(), 'join/index.html'),
       },
     },
   },
