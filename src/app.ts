@@ -137,6 +137,12 @@ const statusLabel = (status: string): string => {
 const badge = (text: string, tone = ''): string =>
   `<span class="badge${tone ? ` badge--${tone}` : ''}">${esc(text)}</span>`;
 
+const iconEmpty = (): string =>
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v16H6.5A2.5 2.5 0 0 0 4 21.5V5.5Z"/><path d="M4 18.5A2.5 2.5 0 0 1 6.5 16H20"/><path d="M8 7h8M8 11h6"/></svg>`;
+
+const iconArrow = (): string =>
+  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>`;
+
 const notice = (message: string, tone: 'info' | 'error' | 'success' = 'info'): string =>
   `<div class="notice notice--${tone}" role="status">${message}</div>`;
 
@@ -231,6 +237,7 @@ const shell = (): void => {
   const me = state.me;
   if (!me) return;
   const name = me.nickname?.trim() || me.alias;
+  const initial = name.slice(0, 1).toUpperCase() || 'G';
   const isLearner = me.kind === 'learner';
   document.body.classList.add('app-body');
   document.body.innerHTML = `
@@ -250,13 +257,27 @@ const shell = (): void => {
         </a>
         <nav class="app-nav" aria-label="Principal">
           <a class="app-nav__link" href="#/">Mis aulas</a>
-          ${isLearner ? '' : '<a class="app-nav__link" href="#/centros">Centros</a>'}
-          ${isLearner ? '' : '<a class="app-nav__link" href="#/aprobaciones">Aprobaciones</a>'}
-          <a class="app-nav__link" href="#/perfil">Mi perfil</a>
         </nav>
-        <div class="app-user">
-          <span class="app-user__name">${esc(name)}</span>
-          <button class="btn btn--ghost" id="logout" type="button">Salir</button>
+        <div class="profile-menu">
+          <button class="profile-trigger" id="profile-trigger" type="button" aria-haspopup="menu" aria-expanded="false" aria-controls="profile-dropdown">
+            <span class="profile-avatar" aria-hidden="true">${esc(initial)}</span>
+            <span class="profile-name">${esc(name)}</span>
+            <svg class="profile-chevron" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+          </button>
+          <div class="profile-dropdown" id="profile-dropdown" role="menu" hidden>
+            <div class="profile-dropdown__head">
+              <span class="profile-avatar profile-avatar--lg" aria-hidden="true">${esc(initial)}</span>
+              <div>
+                <strong>${esc(name)}</strong>
+                <span>${esc(me.alias)}</span>
+              </div>
+            </div>
+            <a class="profile-menu__item" href="#/perfil" role="menuitem">Mi perfil</a>
+            ${isLearner ? '' : '<a class="profile-menu__item" href="#/aprobaciones" role="menuitem">Aprobaciones</a>'}
+            ${isLearner ? '' : '<div class="profile-menu__sep" role="separator"></div><a class="profile-menu__item profile-menu__item--muted" href="#/centros" role="menuitem">Programa para centros</a>'}
+            <div class="profile-menu__sep" role="separator"></div>
+            <button class="profile-menu__item profile-menu__item--danger" type="button" role="menuitem" id="logout">Cerrar sesión</button>
+          </div>
         </div>
       </div>
     </header>
@@ -267,6 +288,52 @@ const shell = (): void => {
   document.querySelector('#skip-view')?.addEventListener('click', (event) => {
     event.preventDefault();
     document.querySelector<HTMLElement>('#view')?.focus();
+  });
+
+  const trigger = document.querySelector<HTMLButtonElement>('#profile-trigger');
+  const dropdown = document.querySelector<HTMLElement>('#profile-dropdown');
+  const closeMenu = (restoreFocus = false): void => {
+    if (!dropdown || !trigger) return;
+    dropdown.hidden = true;
+    trigger.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger.focus();
+  };
+  const openMenu = (): void => {
+    if (!dropdown || !trigger) return;
+    dropdown.hidden = false;
+    trigger.setAttribute('aria-expanded', 'true');
+    dropdown.querySelector<HTMLElement>('[role="menuitem"]')?.focus();
+  };
+  trigger?.addEventListener('click', (event) => {
+    event.stopPropagation();
+    if (!dropdown) return;
+    if (dropdown.hidden) openMenu();
+    else closeMenu();
+  });
+  document.addEventListener('click', (event) => {
+    if (!dropdown || dropdown.hidden) return;
+    const target = event.target as Node;
+    if (!dropdown.contains(target) && !trigger?.contains(target)) closeMenu();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (!dropdown || dropdown.hidden) return;
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      closeMenu(true);
+      return;
+    }
+    if (event.key !== 'ArrowDown' && event.key !== 'ArrowUp') return;
+    event.preventDefault();
+    const items = Array.from(dropdown.querySelectorAll<HTMLElement>('[role="menuitem"]'));
+    const current = document.activeElement as HTMLElement | null;
+    const index = items.indexOf(current ?? items[0]!);
+    const next = event.key === 'ArrowDown'
+      ? items[(index + 1) % items.length]
+      : items[(index - 1 + items.length) % items.length];
+    next?.focus();
+  });
+  dropdown?.querySelectorAll<HTMLElement>('[role="menuitem"]').forEach((item) => {
+    item.addEventListener('click', () => closeMenu());
   });
 
   document.querySelector('#logout')?.addEventListener('click', async () => {
@@ -318,6 +385,10 @@ const route = async (): Promise<void> => {
       renderNotFound();
     }
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    const main = view();
+    main.classList.remove('is-entering');
+    void main.offsetWidth;
+    main.classList.add('is-entering');
   } catch (error) {
     if (token === renderToken) showFatal(error);
   }
@@ -346,8 +417,11 @@ const renderDashboard = async (token: number): Promise<void> => {
     .map((classroom) => `
       <a class="classroom-card" href="#/aula/${esc(classroom.id)}/temario">
         <div class="classroom-card__top">
-          ${badge(roleLabel(classroom.viewerRole), classroom.viewerRole)}
-          ${classroom.status !== 'active' ? badge(statusLabel(classroom.status), 'draft') : ''}
+          <span class="classroom-card__badges">
+            ${badge(roleLabel(classroom.viewerRole), classroom.viewerRole)}
+            ${classroom.status !== 'active' ? badge(statusLabel(classroom.status), 'draft') : ''}
+          </span>
+          <span class="classroom-card__arrow" aria-hidden="true">${iconArrow()}</span>
         </div>
         <h2>${esc(classroom.name)}</h2>
         <p>${esc(classroom.description || 'Sin descripción.')}</p>
@@ -361,8 +435,8 @@ const renderDashboard = async (token: number): Promise<void> => {
 
   view().innerHTML = `
     <section class="app-hero">
-      <div>
-        <p class="eyebrow">Tus aulas</p>
+      <div class="app-hero__copy">
+        <p class="eyebrow">Tu espacio</p>
         <h1>Hola, ${esc(name)}.</h1>
         <p>Organiza el temario, invita a tu grupo y sigue lo que pasa en cada aula.</p>
       </div>
@@ -370,10 +444,16 @@ const renderDashboard = async (token: number): Promise<void> => {
         ${canCreate ? '<button class="btn btn--primary" id="new-classroom" type="button">Crear aula</button>' : ''}
       </div>
     </section>
+    <div class="app-chips" aria-label="Características">
+      <span class="app-chip">Aulas privadas por invitación</span>
+      <span class="app-chip">Sin catálogo público</span>
+      ${canCreate ? '<span class="app-chip">1 aula personal · 12 plazas</span>' : ''}
+    </div>
     <div id="dashboard-notice"></div>
     ${
       classrooms.length === 0
         ? `<section class="panel"><div class="empty">
+            <span class="empty__icon" aria-hidden="true">${iconEmpty()}</span>
             <h3>${canCreate ? 'Aún no tienes aulas.' : 'Aún no estás en ningún aula.'}</h3>
             <p>${canCreate
               ? 'Crea tu primera aula privada y comparte una invitación. Si te han invitado, abre el enlace que te envió tu docente.'

@@ -3,6 +3,7 @@ export interface ApiErrorPayload {
   message: string;
   traceId?: string;
   approvalId?: string;
+  details?: unknown;
 }
 
 export class ApiError extends Error {
@@ -10,6 +11,7 @@ export class ApiError extends Error {
   readonly status: number;
   readonly traceId?: string;
   readonly approvalId?: string;
+  readonly details?: unknown;
 
   constructor(payload: ApiErrorPayload, status = 0) {
     super(payload.message);
@@ -18,6 +20,7 @@ export class ApiError extends Error {
     this.status = status;
     this.traceId = payload.traceId;
     this.approvalId = payload.approvalId;
+    this.details = payload.details;
   }
 }
 
