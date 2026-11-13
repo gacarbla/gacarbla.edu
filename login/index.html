@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es" data-age="kid">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <meta name="theme-color" content="#faf6ec" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Entrar — gacarbla.edu</title>
+    <meta name="description" content="Entra en tu cuenta de gacarbla o en tu aula con el alias que te dio tu docente." />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="preload" href="/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/instrument-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <script type="module" src="/src/login.ts"></script>
+  </head>
+
+  <body class="auth-body">
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+
+    <svg class="svg-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M4 12h16M14 6l6 6-6 6" /></symbol>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M20 12H4M10 6l-6 6 6 6" /></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7" /></symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="3" /><path d="M8 10V7a4 4 0 0 1 8 0v3" /></symbol>
+      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 11v6" /><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none" /></symbol>
+      <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 2.5c.7 4.3 2.7 6.3 7 7-4.3.7-6.3 2.7-7 7-.7-4.3-2.7-6.3-7-7 4.3-.7 6.3-2.7 7-7Z" fill="currentColor" stroke="none" /></symbol>
+    </svg>
+
+    <header class="auth-top">
+      <div class="container auth-top__inner">
+        <a class="brand" href="/" aria-label="gacarbla.edu, volver a la portada">
+          <span class="brand__mark" aria-hidden="true">
+            <svg viewBox="0 0 40 40">
+              <rect width="40" height="40" rx="12" fill="currentColor" />
+              <path d="M10.5 14.2c4.1-2 7.1-2 9.5 0 2.4-2 5.4-2 9.5 0v13.1c-4.1-1.9-7.1-1.9-9.5 0-2.4-1.9-5.4-1.9-9.5 0V14.2Z" fill="#fffdf7" />
+              <path d="M20 14.5v12.5" stroke="#146b54" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M28.4 8.4c.4 2.3 1.5 3.4 3.8 3.8-2.3.4-3.4 1.5-3.8 3.8-.4-2.3-1.5-3.4-3.8-3.8 2.3-.4 3.4-1.5 3.8-3.8Z" fill="#f6c453" />
+            </svg>
+          </span>
+          <span class="brand__word">gacarbla<span class="brand__tld">.edu</span></span>
+        </a>
+
+        <a class="auth-back" href="/">
+          <svg class="icon" aria-hidden="true"><use href="#i-arrow-left" /></svg>
+          Volver a la portada
+        </a>
+      </div>
+    </header>
+
+    <main class="auth-main container" id="contenido">
+      <div class="auth-intro">
+        <p class="eyebrow eyebrow--spark">
+          <svg class="icon" aria-hidden="true"><use href="#i-spark" /></svg>
+          Un espacio privado para tu grupo
+        </p>
+        <h1>Entra en tu aula.</h1>
+        <p>
+          Si tienes cuenta de gacarbla, entra por la ventana segura. Si eres alumno/a de un aula tutelada, entra con
+          el alias que te dio tu docente.
+        </p>
+        <p class="auth-intro__note">
+          <svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg>
+          Las aulas no son públicas: solo se entra con una cuenta o una invitación.
+        </p>
+      </div>
+
+      <div class="auth-cards">
+        <section class="auth-card" aria-labelledby="adult-title">
+          <span class="auth-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-lock" /></svg></span>
+          <p class="eyebrow">Cuenta gacarbla</p>
+          <h2 id="adult-title">Ya tengo cuenta</h2>
+          <p class="auth-card__lede">
+            El acceso se hace en la ventana oficial de <strong>api.gacarbla.es</strong>. Allí se gestionan la
+            contraseña, el segundo factor y la verificación de email.
+          </p>
+          <button class="btn btn--primary btn--lg auth-submit" id="users-login" type="button">
+            Abrir ventana de acceso
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+          </button>
+          <button class="auth-alt" id="users-login-redirect" type="button">
+            ¿No se abre la ventana? Accede en esta página
+          </button>
+          <p class="auth-card__note">
+            <svg class="icon" aria-hidden="true"><use href="#i-info" /></svg>
+            No escribas tu contraseña en esta página: la ventana oficial se encarga.
+          </p>
+          <p class="auth-status" id="adult-status" role="status" aria-live="polite"></p>
+        </section>
+
+        <section class="auth-card auth-card--learner" aria-labelledby="learner-title">
+          <p class="eyebrow">Alumnado sin cuenta API</p>
+          <h2 id="learner-title">Entro con mi alias</h2>
+          <p class="auth-card__lede">
+            Si tu docente te creó una cuenta tutelada, usa el alias, la contraseña y el PIN o la pregunta de
+            seguridad que te dio.
+          </p>
+
+          <form class="auth-form" id="learner-form" novalidate>
+            <label class="auth-field">
+              <span>Alias</span>
+              <input name="alias" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required />
+            </label>
+
+            <label class="auth-field">
+              <span>Contraseña</span>
+              <input name="password" type="password" autocomplete="current-password" required />
+            </label>
+
+            <label class="auth-field">
+              <span>Segundo paso</span>
+              <select name="factor" id="learner-factor">
+                <option value="pin">PIN</option>
+                <option value="answer">Pregunta de seguridad</option>
+              </select>
+            </label>
+
+            <label class="auth-field" id="pin-field">
+              <span>PIN</span>
+              <input name="pin" type="text" inputmode="numeric" autocomplete="one-time-code" />
+            </label>
+
+            <label class="auth-field" id="answer-field" hidden>
+              <span>Respuesta de seguridad</span>
+              <input name="answer" type="text" autocomplete="off" />
+            </label>
+
+            <button class="btn btn--primary btn--lg auth-submit" id="learner-submit" type="submit">
+              Entrar en mi aula
+              <svg class="icon" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+            </button>
+            <p class="auth-status" id="learner-status" role="status" aria-live="polite"></p>
+          </form>
+
+          <p class="auth-card__note">
+            ¿No tienes alias? Pídeselo a tu docente. No hay registro público de alumnos.
+          </p>
+        </section>
+      </div>
+
+      <section class="auth-success" id="auth-success" hidden aria-labelledby="success-title">
+        <span class="auth-success__icon"><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg></span>
+        <div>
+          <p class="eyebrow">Sesión iniciada</p>
+          <h2 id="success-title">Has entrado.</h2>
+          <p>Hola, <strong id="success-name">alumno/a</strong>. La zona de aulas llegará con la beta.</p>
+        </div>
+        <a class="btn btn--secondary" href="/">Volver a la portada</a>
+      </section>
+    </main>
+
+    <footer class="auth-footer">
+      <div class="container auth-footer__inner">
+        <p>© <span data-year>2026</span> gacarbla.edu · Aulas privadas para enseñar y aprender</p>
+        <p>Cookie de sesión segura, sin seguimiento · <a href="/">Portada</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

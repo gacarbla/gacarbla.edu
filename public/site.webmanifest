@@ -1,0 +1,26 @@
+{
+  "name": "gacarbla.edu",
+  "short_name": "gacarbla.edu",
+  "description": "Aulas privadas para enseñar y aprender. Crea tu aula, ordena el temario y comparte una invitación.",
+  "lang": "es",
+  "dir": "ltr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf6ec",
+  "theme_color": "#faf6ec",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

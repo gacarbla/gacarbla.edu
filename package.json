@@ -1,0 +1,24 @@
+{
+  "name": "gacarbla-edu-web",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Portada pública de gacarbla.edu. Aprender y enseñar, de 8 a 99 años.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hpke/core": "^1.10.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "vite": "^7.1.7"
+  }
+}

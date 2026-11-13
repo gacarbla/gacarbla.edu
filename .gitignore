@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.DS_Store
+Thumbs.db
+*.local
+.vite/
+
+# Documentación privada de la API: nunca publicar en GitHub.
+docs/api/
+docs/legal/
+
+# Secretos de entorno.
+.env
+.env.*
+!.env.example
