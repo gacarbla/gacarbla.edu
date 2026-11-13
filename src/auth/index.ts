@@ -2,7 +2,7 @@ import { isApiError } from '../api/errors';
 import { resolveAgeMode, setAgeMode, type AgeMode } from '../lib/age-mode';
 import { exchangeEdu, loginLearner, logoutEdu, refreshEdu, type LearnerLoginInput } from './edu';
 import { openUsersLoginPopup, PopupBlockedError, redirectToUsersLogin } from './popup';
-import { clearAllSessions, getUsersBirthDate, session, setUsersProfile } from './session';
+import { clearAllSessions, getUsersBirthDate, readPersistedEduSession, session, setUsersProfile } from './session';
 import type { EduAuthData, UsersMeRestView } from './types';
 import { getUsersMe, logoutUsers, refreshUsers, restoreUsersSession, updateUsersProfile } from './users';
 
@@ -26,6 +26,46 @@ export type AdultLoginResult =
   | ({ redirected: false; needsProfile: false } & AdultLoginData)
   | AdultProfileRequired
   | { redirected: true };
+
+/**
+ * Restaura la sesión edu guardada en `sessionStorage` (solo el refresh, nunca
+ * el access). Rota el refresh con DPoP y renueva el access.
+ */
+export async function restorePersistedEduSession(): Promise<boolean> {
+  const stored = readPersistedEduSession();
+  if (!stored) return false;
+
+  session.edu = {
+    accessToken: '',
+    refreshToken: stored.refreshToken,
+    expiresAt: 0,
+    identity: stored.identity,
+    birthDate: stored.birthDate ?? null,
+  };
+
+  try {
+    await refreshEdu();
+    setAgeMode(resolveAgeMode(stored.birthDate, stored.identity.ageBand));
+    return true;
+  } catch {
+    clearAllSessions();
+    return false;
+  }
+}
+
+/**
+ * Restaura la sesión de la app tras una recarga. Primero intenta el refresh
+ * edu guardado; si no existe, recupera la cookie de `users` y hace exchange.
+ */
+export async function restoreAppSession(): Promise<boolean> {
+  if (await restorePersistedEduSession()) return true;
+  try {
+    const result = await completeAdultLogin();
+    return !result.redirected && !result.needsProfile;
+  } catch {
+    return false;
+  }
+}
 
 function applyUsersMe(me: UsersMeRestView): void {
   setUsersProfile(
@@ -93,27 +133,37 @@ export interface AdultProfileInput {
 
 /**
  * Crea el perfil edu con los datos que faltaban en la cuenta principal. La API
- * solo rellena campos vacíos: lo que ya existía queda bloqueado.
+ * solo sincroniza los datos legales que faltaban; el nombre visible de edu es
+ * independiente y no se escribe en la cuenta principal.
  */
 export async function completeAdultProfile(
   me: UsersMeRestView,
   input: AdultProfileInput,
 ): Promise<AdultLoginData> {
-  const nickname = input.nickname?.trim();
+  const nickname = input.nickname?.trim() || undefined;
 
-  // Primero se completa la cuenta principal con lo que faltaba. Así el
+  // Primero se completa la cuenta principal con la fecha que faltaba. Así el
   // exchange (y cualquier otra app vinculada) ve el dato ya sincronizado.
-  await updateUsersProfile({
-    birthDate: input.birthDate,
-    ...(nickname && !me.display_name ? { displayName: nickname } : {}),
-  });
+  await updateUsersProfile({ birthDate: input.birthDate });
 
-  const edu = await exchangeEdu();
+  let edu: EduAuthData;
+  try {
+    edu = await exchangeEdu({
+      ...(nickname ? { nickname } : {}),
+    });
+  } catch (error) {
+    // Compatibilidad con la API anterior al campo `nickname`: se reintenta sin
+    // él. La fecha ya está en la cuenta principal, así que el exchange pasa.
+    if (nickname && isApiError(error) && error.status === 422) {
+      edu = await exchangeEdu();
+    } else {
+      throw error;
+    }
+  }
 
   const updatedMe: UsersMeRestView = {
     ...me,
     birth_date: input.birthDate,
-    ...(nickname && !me.display_name ? { display_name: nickname } : {}),
   };
   applyUsersMe(updatedMe);
 

@@ -334,6 +334,17 @@
   flex: none;
 }
 
+.auth-success__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.auth-success__actions .btn {
+  flex: none;
+}
+
 .auth-footer {
   border-top: 1px solid var(--line);
   padding-block: 1.1rem;

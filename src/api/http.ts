@@ -34,6 +34,7 @@ async function execute<T>(
   options: RequestOptions,
   allowRetry: boolean,
   raw = false,
+  text = false,
 ): Promise<T> {
   const method = options.method ?? 'GET';
   const auth = options.auth ?? 'none';
@@ -77,6 +78,31 @@ async function execute<T>(
     throw new ApiError({ code: 'NETWORK_ERROR', message: 'No se pudo conectar con el servidor.' }, 0);
   }
 
+  if (text) {
+    const textBody = await response.text();
+    if (!response.ok) {
+      let parsed: Envelope<T> | null = null;
+      try {
+        parsed = JSON.parse(textBody) as Envelope<T>;
+      } catch {
+        /* respuesta no JSON */
+      }
+      const error = new ApiError(
+        parsed?.error ?? {
+          code: `HTTP_${response.status}`,
+          message: 'El servidor devolvió un error.',
+        },
+        response.status,
+      );
+      if (allowRetry && useDpop && response.status === 401 && isDpopRetryable(error)) {
+        await wsClient.hello(true);
+        return execute<T>(path, options, false, raw, text);
+      }
+      throw error;
+    }
+    return textBody as T;
+  }
+
   const body = (await response.json().catch(() => null)) as Envelope<T> | null;
 
   if (!response.ok || (!raw && !body?.ok)) {
@@ -90,7 +116,7 @@ async function execute<T>(
 
     if (allowRetry && useDpop && response.status === 401 && isDpopRetryable(error)) {
       await wsClient.hello(true);
-      return execute<T>(path, options, false, raw);
+      return execute<T>(path, options, false, raw, text);
     }
 
     throw error;
@@ -111,4 +137,9 @@ export function apiRequest<T>(path: string, options: RequestOptions = {}): Promi
  */
 export function apiRequestRaw<T>(path: string, options: RequestOptions = {}): Promise<T> {
   return execute<T>(path, options, true, true);
+}
+
+/** Para respuestas que no son JSON, como el HTML exportado de una página. */
+export function apiRequestText(path: string, options: RequestOptions = {}): Promise<string> {
+  return execute<string>(path, options, true, false, true);
 }

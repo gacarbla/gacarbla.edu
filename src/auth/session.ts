@@ -20,6 +20,16 @@ export interface EduSession {
   refreshToken: string;
   expiresAt: number;
   identity: EduIdentity;
+  /** Fecha exacta usada para el estilo; no se guarda en la API. */
+  birthDate?: string | null;
+}
+
+const EDU_STORAGE_KEY = 'gacarbla.edu.session.v1';
+
+export interface PersistedEduSession {
+  refreshToken: string;
+  identity: EduIdentity;
+  birthDate?: string | null;
 }
 
 export const session: {
@@ -59,7 +69,50 @@ export function setEduSession(data: EduAuthData | EduRefreshData): void {
     refreshToken: data.refreshToken,
     expiresAt: expiresAtFromNow(data.expiresInSec),
     identity,
+    birthDate: session.edu?.birthDate ?? getUsersBirthDate() ?? null,
   };
+  persistEduSession();
+}
+
+function persistEduSession(): void {
+  try {
+    if (!session.edu) {
+      sessionStorage.removeItem(EDU_STORAGE_KEY);
+      return;
+    }
+    const data: PersistedEduSession = {
+      refreshToken: session.edu.refreshToken,
+      identity: session.edu.identity,
+      birthDate: session.edu.birthDate ?? null,
+    };
+    sessionStorage.setItem(EDU_STORAGE_KEY, JSON.stringify(data));
+  } catch {
+    /* sessionStorage no disponible: la sesión dura lo que la pestaña */
+  }
+}
+
+export function readPersistedEduSession(): PersistedEduSession | null {
+  try {
+    const raw = sessionStorage.getItem(EDU_STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<PersistedEduSession> | null;
+    if (
+      !parsed ||
+      typeof parsed.refreshToken !== 'string' ||
+      !parsed.refreshToken ||
+      !parsed.identity ||
+      typeof parsed.identity.identityId !== 'string'
+    ) {
+      return null;
+    }
+    return {
+      refreshToken: parsed.refreshToken,
+      identity: parsed.identity,
+      birthDate: typeof parsed.birthDate === 'string' ? parsed.birthDate : null,
+    };
+  } catch {
+    return null;
+  }
 }
 
 export function clearUsersSession(): void {
@@ -68,11 +121,13 @@ export function clearUsersSession(): void {
 
 export function clearEduSession(): void {
   session.edu = null;
+  persistEduSession();
 }
 
 export function clearAllSessions(): void {
   session.users = null;
   session.edu = null;
+  persistEduSession();
 }
 
 export function getUsersBirthDate(): string | null {
