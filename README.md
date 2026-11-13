@@ -96,7 +96,7 @@ La API debe autorizar el origen de edu tanto en `CORS_ORIGINS` como en `returnOr
 La app vive en **`/app/`** y requiere sesión. Usa las mismas claves visuales y los estilos por edad de la portada.
 
 - **Mis aulas:** lista de aulas, creación de aula personal y acceso a cada aula.
-- **Temario:** carpetas, páginas Markdown, edición con versiones, publicación/despublicación, duplicado, borrado y comentarios.
+- **Temario:** carpetas, páginas Markdown, edición con control de versión, publicación/despublicación, duplicado, borrado, búsqueda y comentarios.
 - **Personas:** censo, cambios de rol, expulsión, invitaciones con enlace `/join/?code=…` y revocación.
 - **Ejercicios:** creación de opción múltiple, verdadero/falso y respuesta corta; intentos del alumnado y corrección automática.
 - **Boletín:** progreso, intentos, notas manuales y nota ponderada.

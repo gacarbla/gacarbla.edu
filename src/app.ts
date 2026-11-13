@@ -37,6 +37,7 @@ import {
   listPages,
   listPageComments,
   listThreads,
+  searchContent,
   publishPage,
   removeMember,
   requestApproval,
@@ -725,6 +726,13 @@ const renderSyllabus = async (container: HTMLElement, classroom: Classroom): Pro
           <button class="btn btn--primary" type="button" id="new-page">Nueva página</button>
         </div>` : ''}
       </div>
+      <form id="content-search" class="toolbar" style="margin-bottom:1rem">
+        <label class="field" style="flex:1;min-width:12rem">Buscar en el temario
+          <input name="q" type="search" minlength="2" maxlength="200" placeholder="Fracciones, examen…" />
+        </label>
+        <button class="btn btn--secondary" type="submit" style="align-self:end">Buscar</button>
+      </form>
+      <div id="search-results"></div>
       ${hasContent
         ? `<div class="content-list">${folderBlocks}${rootPages}</div>`
         : `<div class="empty">
@@ -824,6 +832,39 @@ const renderSyllabus = async (container: HTMLElement, classroom: Classroom): Pro
       toast(apiMessage(error), 'error');
     } finally {
       setBusy(pageSubmit, false);
+    }
+  });
+
+  const searchForm = container.querySelector<HTMLFormElement>('#content-search');
+  const searchResults = container.querySelector<HTMLElement>('#search-results');
+  searchForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!searchForm || !searchResults) return;
+    const query = String(new FormData(searchForm).get('q') ?? '').trim();
+    if (query.length < 2) {
+      toast('Escribe al menos dos caracteres.', 'error');
+      return;
+    }
+    searchResults.innerHTML = notice('Buscando…');
+    try {
+      const results = await searchContent(query, classroom.id);
+      searchResults.innerHTML = results.length
+        ? `<div class="content-list">${results.map((result) => `
+            <div class="content-item">
+              <span aria-hidden="true">🔎</span>
+              <div class="content-item__main">
+                <a class="content-item__title" href="#/aula/${esc(classroom.id)}/pagina/${esc(result.pageId)}">${esc(result.title)}</a>
+                <div class="content-item__meta">
+                  ${badge(statusLabel(result.status), result.status === 'published' ? 'published' : 'draft')}
+                  <span>${esc(fmtDateShort(result.updatedAt))}</span>
+                </div>
+                <p class="field__hint">${esc(result.snippet)}</p>
+              </div>
+            </div>
+          `).join('')}</div>`
+        : notice('No encontramos páginas con esa búsqueda.', 'info');
+    } catch (error) {
+      searchResults.innerHTML = notice(esc(apiMessage(error)), 'error');
     }
   });
 
