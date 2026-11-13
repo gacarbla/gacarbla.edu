@@ -1,5 +1,5 @@
 import { apiRequest } from '../api/http';
-import { ApiError } from '../api/errors';
+import { ApiError, isApiError } from '../api/errors';
 import { HPKE_INFO_EDU, sealCredentials } from './hpke';
 import { clearEduSession, session, setEduSession } from './session';
 import type { EduAuthData, EduIdentity, EduRefreshData } from './types';
@@ -68,6 +68,59 @@ export async function loginLearner(input: LearnerLoginInput): Promise<EduAuthDat
   });
   setEduSession(data);
   return data;
+}
+
+export interface LearnerIdentifyResult {
+  needsSecondFactor: true;
+  factors: Array<'pin' | 'security_answer'>;
+  question?: string;
+}
+
+/**
+ * Comprueba alias y contraseña sin completar el login. La API responde
+ * `EDU_SECOND_FACTOR_REQUIRED` con el método efectivo (PIN o pregunta) cuando
+ * la contraseña es correcta y falta el segundo paso. Con una API antigua,
+ * devuelve `EDU_LOGIN_INVALID` y la UI ofrece el fallback.
+ */
+export async function identifyLearner(input: {
+  alias: string;
+  password: string;
+}): Promise<LearnerIdentifyResult | EduAuthData> {
+  const hello = await wsClient.hello();
+  const protectedPayload = await sealCredentials(
+    hello.serverHpkePubB64,
+    { alias: input.alias, password: input.password },
+    HPKE_INFO_EDU,
+  );
+
+  try {
+    const data = await apiRequest<EduAuthData>('/edu/v1/auth/learner/login', {
+      method: 'POST',
+      body: { alias: input.alias, protectedPayload },
+      auth: 'none',
+      dpop: true,
+    });
+    setEduSession(data);
+    return data;
+  } catch (error) {
+    if (isApiError(error) && error.code === 'EDU_SECOND_FACTOR_REQUIRED') {
+      const details = (error.details ?? {}) as { factors?: unknown; question?: unknown };
+      const factors = Array.isArray(details.factors)
+        ? details.factors.filter(
+            (factor): factor is 'pin' | 'security_answer' =>
+              factor === 'pin' || factor === 'security_answer',
+          )
+        : [];
+      return {
+        needsSecondFactor: true,
+        factors,
+        ...(typeof details.question === 'string' && details.question
+          ? { question: details.question }
+          : {}),
+      };
+    }
+    throw error;
+  }
 }
 
 export async function refreshEdu(): Promise<EduRefreshData> {
