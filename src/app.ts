@@ -2078,6 +2078,15 @@ const renderApprovals = async (token: number): Promise<void> => {
 /* ------------------------------------------------------------------ */
 
 const renderCenters = (): void => {
+  if (state.me?.kind === 'learner') {
+    view().innerHTML = `
+      <section class="app-hero">
+        <div><p class="eyebrow">Programa para centros</p><h1>Para tu centro.</h1></div>
+      </section>
+      ${notice('El programa para centros requiere una cuenta adulta. Pide a tu docente o a tu centro que lo solicite.', 'info')}
+    `;
+    return;
+  }
   view().innerHTML = `
     <section class="app-hero">
       <div>
@@ -2170,7 +2179,7 @@ const renderProfile = async (token: number): Promise<void> => {
   state.me = me;
   paintAge(me);
 
-  const notifications = me.notifications;
+  const notifications = me.notifications ?? { email: true, push: false, digest: 'off' };
 
   view().innerHTML = `
     <section class="app-hero">
