@@ -7,6 +7,14 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.3.1] - 2026-11-13
+
+### Corregido
+
+- El alumnado ya no ve «Crear aula», «Centros» ni «Aprobaciones». El estado
+  vacío le pide abrir el enlace de invitación de su docente.
+- La navegación de la app se adapta al tipo de cuenta.
+
 ## [0.3.0] - 2026-11-13
 
 ### Añadido
@@ -60,7 +68,8 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 - CI con comprobación de tipos, build y guardia de documentos privados.
 - Despliegue automático en GitHub Pages y workflow de releases.
 
-[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.1
 [0.3.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.0
 [0.2.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.2.0
 [0.1.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.1.0

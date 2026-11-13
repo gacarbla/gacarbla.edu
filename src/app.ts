@@ -230,6 +230,7 @@ const shell = (): void => {
   const me = state.me;
   if (!me) return;
   const name = me.nickname?.trim() || me.alias;
+  const isLearner = me.kind === 'learner';
   document.body.classList.add('app-body');
   document.body.innerHTML = `
     <a class="skip-link" href="#view" id="skip-view">Saltar al contenido</a>
@@ -248,8 +249,8 @@ const shell = (): void => {
         </a>
         <nav class="app-nav" aria-label="Principal">
           <a class="app-nav__link" href="#/">Mis aulas</a>
-          <a class="app-nav__link" href="#/centros">Centros</a>
-          <a class="app-nav__link" href="#/aprobaciones">Aprobaciones</a>
+          ${isLearner ? '' : '<a class="app-nav__link" href="#/centros">Centros</a>'}
+          ${isLearner ? '' : '<a class="app-nav__link" href="#/aprobaciones">Aprobaciones</a>'}
           <a class="app-nav__link" href="#/perfil">Mi perfil</a>
         </nav>
         <div class="app-user">
@@ -338,6 +339,7 @@ const renderDashboard = async (token: number): Promise<void> => {
   if (token !== renderToken) return;
   const me = state.me!;
   const name = me.nickname?.trim() || me.alias;
+  const canCreate = me.kind !== 'learner';
 
   const cards = classrooms
     .map((classroom) => `
@@ -364,16 +366,18 @@ const renderDashboard = async (token: number): Promise<void> => {
         <p>Organiza el temario, invita a tu grupo y sigue lo que pasa en cada aula.</p>
       </div>
       <div class="app-hero__actions">
-        <button class="btn btn--primary" id="new-classroom" type="button">Crear aula</button>
+        ${canCreate ? '<button class="btn btn--primary" id="new-classroom" type="button">Crear aula</button>' : ''}
       </div>
     </section>
     <div id="dashboard-notice"></div>
     ${
       classrooms.length === 0
         ? `<section class="panel"><div class="empty">
-            <h3>Aún no tienes aulas.</h3>
-            <p>Crea tu primera aula privada y comparte una invitación. Si te han invitado, abre el enlace que te envió tu docente.</p>
-            <p><button class="btn btn--primary" type="button" id="empty-create">Crear mi aula</button></p>
+            <h3>${canCreate ? 'Aún no tienes aulas.' : 'Aún no estás en ningún aula.'}</h3>
+            <p>${canCreate
+              ? 'Crea tu primera aula privada y comparte una invitación. Si te han invitado, abre el enlace que te envió tu docente.'
+              : 'Abre el enlace de invitación que te dio tu docente. Cuando lo aceptes, el aula aparecerá aquí.'}</p>
+            ${canCreate ? '<p><button class="btn btn--primary" type="button" id="empty-create">Crear mi aula</button></p>' : ''}
           </div></section>`
         : `<section class="classroom-grid" aria-label="Tus aulas">${cards}</section>`
     }
