@@ -7,6 +7,13 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-11-13
+
+### Añadido
+
+- Búsqueda de texto en las páginas del temario, con enlace directo al
+  resultado y fragmento de contexto.
+
 ## [0.3.2] - 2026-11-13
 
 ### Corregido
@@ -76,7 +83,8 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 - CI con comprobación de tipos, build y guardia de documentos privados.
 - Despliegue automático en GitHub Pages y workflow de releases.
 
-[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.3.2...HEAD
+[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.4.0...HEAD
+[0.4.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.4.0
 [0.3.2]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.2
 [0.3.1]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.1
 [0.3.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.0
