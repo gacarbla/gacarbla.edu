@@ -63,6 +63,7 @@ No incluye `login_history` (esa vista es solo del WS). El cliente de edu usa `ap
 - Si falta, `POST /edu/v1/auth/exchange` devuelve `403 EDU_PROFILE_INCOMPLETE`. El cliente muestra una pantalla para completar el perfil, no un error de soporte.
 - El formulario autocompleta y bloquea lo que ya existe en la cuenta principal. Solo pide lo que falta.
 - Al enviar la fecha, la API la escribe en `users.birthDate` mediante el bus interno `users.v1.edu_profile_sync`, que **solo rellena campos vacíos** y nunca sobrescribe los existentes.
+- El cliente hace la primera escritura con `users/v1/me/profile.update` (WS) para funcionar también con versiones anteriores de la API; el exchange acepta `birthDate`/`nickname` como alternativa y aplica la misma regla de no sobrescribir.
 - El nombre visible sigue la misma regla: si existe en `users.displayName`, se copia al `nickname` de edu y queda bloqueado; si falta y se aporta en edu, se guarda en `users.displayName`.
 - El `ageMode` del perfil edu (`minor`/`adult`) se recalcula en cada exchange a partir de la fecha de la cuenta principal.
 - Después del alta, ambos perfiles siguen vinculados: la cuenta principal manda y edu refleja sus datos.

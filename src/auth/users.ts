@@ -79,6 +79,46 @@ export async function getUsersMe(): Promise<UsersMeRestView> {
   return apiRequestRaw<UsersMeRestView>('/users/v1/me', { auth: 'users' });
 }
 
+export interface UsersProfilePatch {
+  birthDate?: string;
+  displayName?: string;
+}
+
+/**
+ * Actualiza la cuenta principal con los datos que faltaban. Usa el endpoint
+ * oficial de perfil (WS) para que la sincronización funcione también con
+ * versiones de la API anteriores al exchange con `birthDate`.
+ */
+export async function updateUsersProfile(patch: UsersProfilePatch): Promise<void> {
+  const current = session.users;
+  if (!current) {
+    throw new ApiError({ code: 'AUTH_REQUIRED', message: 'No hay sesión de usuario.' }, 401);
+  }
+
+  const device = await wsClient.getDevice();
+  const proof = await createDpopProof({
+    keyPair: device.keyPair,
+    publicJwk: device.publicJwk,
+    htu: `${API_BASE_URL}/ws:users/v1/me/profile.update`,
+    htm: 'POST',
+    nonce: await wsClient.ensureNonce(),
+    accessToken: current.accessToken,
+  });
+
+  await wsClient.request('users/v1/me/profile.update', {
+    ...(patch.birthDate ? { birthDate: patch.birthDate } : {}),
+    ...(patch.displayName ? { displayName: patch.displayName } : {}),
+    _dpop: proof,
+    _access: current.accessToken,
+  });
+
+  current.profile = {
+    ...current.profile,
+    ...(patch.birthDate ? { birthDate: patch.birthDate } : {}),
+    ...(patch.displayName ? { displayName: patch.displayName } : {}),
+  };
+}
+
 /**
  * Restaura la sesión users desde la cookie HttpOnly que dejó la ventana de
  * api.gacarbla.es tras el login. Requiere el WS vivo y su connectionId.
