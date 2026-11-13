@@ -105,6 +105,8 @@ La app vive en **`/app/`** y requiere sesión. Usa las mismas claves visuales y 
 - **Centros:** formulario de solicitud del programa para centros.
 - **Perfil:** alias de edu, nombre visible independiente de la cuenta API y preferencias de notificación.
 
+La UI cubre los tres tipos de ejercicio más habituales. La API ya expone además archivos adjuntos, emparejar, ordenar, rellenar huecos, audio/dibujo y administración de centros; esas pantallas quedan para la siguiente iteración.
+
 La sesión edu se guarda en `sessionStorage` solo con el refresh token (nunca el access) y se rota con DPoP. El nombre visible de edu es independiente del `displayName` de la cuenta API: la mayoría de cuentas usan apodos y edu permite otro nombre.
 
 La portada enlaza los CTAs de creación a `/login/?next=/app/`; los enlaces de invitación llevan a `/join/?code=…`.
