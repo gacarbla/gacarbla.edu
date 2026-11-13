@@ -2,7 +2,15 @@ import './styles/main.css';
 import './styles/login.css';
 
 import { isApiError } from './api/errors';
-import { completeAdultLogin, loginAdultWithPopup, loginLearnerWithAge } from './auth';
+import {
+  completeAdultLogin,
+  completeAdultProfile,
+  loginAdultWithPopup,
+  loginLearnerWithAge,
+  type AdultProfileRequired,
+  type AdultLoginResult,
+} from './auth';
+import type { UsersMeRestView } from './auth/types';
 import { clearRedirectMarker, isRedirectReturn, redirectToUsersLogin } from './auth/popup';
 import { initAgeModeIntegration } from './lib/age-mode';
 import { initYear } from './lib/header';
@@ -30,8 +38,12 @@ function friendlyError(error: unknown): string {
         return 'Esta cuenta es de una persona menor de 16. Entra con el alias de alumno que te dio tu tutor.';
       case 'EDU_LEARNER_EXPIRED':
         return 'Tu cuenta de alumno ha caducado. Pide a tu tutor que la actualice.';
-      case 'EDU_BIRTHDATE_REQUIRED':
-        return 'La cuenta no tiene fecha de nacimiento. Contacta con soporte.';
+      case 'EDU_PROFILE_INCOMPLETE':
+        return 'Completa tu fecha de nacimiento para crear tu perfil de edu.';
+      case 'EDU_BIRTHDATE_INVALID':
+        return 'Esa fecha de nacimiento no es válida.';
+      case 'EDU_PROFILE_SYNC_FAILED':
+        return 'No se pudo guardar el dato en tu cuenta gacarbla. Inténtalo de nuevo.';
       case 'NETWORK_ERROR':
       case 'WS_UNAVAILABLE':
       case 'WS_CLOSED':
@@ -58,9 +70,18 @@ function initLogin(): void {
   const cards = document.querySelector<HTMLElement>('.auth-cards');
   const success = document.querySelector<HTMLElement>('#auth-success');
   const successName = document.querySelector<HTMLElement>('#success-name');
+  const setup = document.querySelector<HTMLElement>('#profile-setup');
+  const setupForm = document.querySelector<HTMLFormElement>('#profile-form');
+  const setupSubmit = document.querySelector<HTMLButtonElement>('#profile-submit');
+  const setupStatus = document.querySelector<HTMLElement>('#profile-status');
+  const setupName = setupForm?.querySelector<HTMLInputElement>('input[name="nickname"]');
+  const setupBirth = setupForm?.querySelector<HTMLInputElement>('input[name="birthDate"]');
+  const setupNameHint = document.querySelector<HTMLElement>('#setup-name-hint');
+  const setupAccount = document.querySelector<HTMLElement>('#setup-account');
   const aliasInput = learnerForm?.querySelector<HTMLInputElement>('input[name="alias"]');
   const pinInput = learnerForm?.querySelector<HTMLInputElement>('input[name="pin"]');
   const answerInput = learnerForm?.querySelector<HTMLInputElement>('input[name="answer"]');
+  let pendingMe: UsersMeRestView | null = null;
 
   const updateFactor = (): void => {
     if (!factor) return;
@@ -81,6 +102,7 @@ function initLogin(): void {
   const showSuccess = (name: string): void => {
     if (successName) successName.textContent = name;
     if (cards) cards.hidden = true;
+    if (setup) setup.hidden = true;
     if (success) {
       success.hidden = false;
       success.setAttribute('tabindex', '-1');
@@ -97,6 +119,49 @@ function initLogin(): void {
     showSuccess(name || 'tu cuenta');
   };
 
+  const showProfileSetup = (result: AdultProfileRequired): void => {
+    pendingMe = result.me;
+    if (cards) cards.hidden = true;
+    if (success) success.hidden = true;
+    if (setup) setup.hidden = false;
+    if (setupAccount) {
+      setupAccount.textContent = result.me.email ?? result.me.username;
+    }
+    if (setupName) {
+      const mainName = result.me.display_name?.trim() ?? '';
+      setupName.value = mainName;
+      setupName.readOnly = Boolean(mainName);
+      if (setupNameHint) {
+        setupNameHint.textContent = mainName
+          ? 'Viene de tu cuenta gacarbla y queda bloqueado.'
+          : 'Opcional. Si lo escribes, se guardará en tu cuenta gacarbla.';
+      }
+    }
+    if (setupBirth) {
+      setupBirth.value = '';
+      setupBirth.required = true;
+    }
+    setStatus(adultStatus, '');
+    setStatus(setupStatus, '');
+    setup?.scrollIntoView({
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+      block: 'center',
+    });
+    setupBirth?.focus({ preventScroll: true });
+  };
+
+  const handleAdultResult = (result: AdultLoginResult): void => {
+    if (result.redirected) {
+      setStatus(adultStatus, 'Te llevamos al acceso oficial en esta página…');
+      return;
+    }
+    if (result.needsProfile) {
+      showProfileSetup(result);
+      return;
+    }
+    showAdult(result.me.display_name ?? result.me.username);
+  };
+
   const cleanReturnUrl = (): string => {
     const url = new URL(window.location.href);
     url.searchParams.delete('mode');
@@ -108,11 +173,7 @@ function initLogin(): void {
     setStatus(adultStatus, 'Abriendo la ventana segura de api.gacarbla.es…');
     try {
       const result = await loginAdultWithPopup(cleanReturnUrl());
-      if (result.redirected) {
-        setStatus(adultStatus, 'Te llevamos al acceso oficial en esta página…');
-        return;
-      }
-      showAdult(result.me.display_name ?? result.me.username);
+      handleAdultResult(result);
     } catch (error) {
       setStatus(adultStatus, friendlyError(error), 'error');
     } finally {
@@ -169,13 +230,61 @@ function initLogin(): void {
     }
   });
 
+  setupForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!setupForm || !setupSubmit || !pendingMe) return;
+
+    const data = new FormData(setupForm);
+    const birthDate = String(data.get('birthDate') ?? '').trim();
+    const nicknameRaw = String(data.get('nickname') ?? '').trim();
+    const nickname = setupName?.readOnly ? undefined : nicknameRaw || undefined;
+
+    if (!birthDate) {
+      setStatus(setupStatus, 'Escribe tu fecha de nacimiento.', 'error');
+      setupBirth?.focus();
+      return;
+    }
+    const birth = new Date(`${birthDate}T00:00:00`);
+    if (Number.isNaN(birth.getTime()) || birth.getTime() > Date.now()) {
+      setStatus(setupStatus, 'Esa fecha de nacimiento no es válida.', 'error');
+      setupBirth?.focus();
+      return;
+    }
+    let age = new Date().getFullYear() - birth.getFullYear();
+    const monthDiff = new Date().getMonth() - birth.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && new Date().getDate() < birth.getDate())) age -= 1;
+    if (age < 16) {
+      setStatus(
+        setupStatus,
+        'Para menores de 16, entra con el alias de alumno que te dio tu tutor.',
+        'error',
+      );
+      return;
+    }
+
+    setupSubmit.disabled = true;
+    setStatus(setupStatus, 'Guardando tu perfil…');
+    try {
+      const result = await completeAdultProfile(pendingMe, {
+        birthDate,
+        ...(nickname ? { nickname } : {}),
+      });
+      pendingMe = null;
+      showAdult(result.me.display_name ?? result.me.username);
+    } catch (error) {
+      setStatus(setupStatus, friendlyError(error), 'error');
+    } finally {
+      setupSubmit.disabled = false;
+    }
+  });
+
   if (isRedirectReturn()) {
     clearRedirectMarker();
     if (adultButton) adultButton.disabled = true;
     if (adultRedirect) adultRedirect.disabled = true;
     setStatus(adultStatus, 'Completando el acceso…');
     completeAdultLogin()
-      .then((result) => showAdult(result.me.display_name ?? result.me.username))
+      .then(handleAdultResult)
       .catch((error) => setStatus(adultStatus, friendlyError(error), 'error'))
       .finally(() => {
         if (adultButton) adultButton.disabled = false;

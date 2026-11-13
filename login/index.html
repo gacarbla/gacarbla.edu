@@ -141,6 +141,34 @@
         </section>
       </div>
 
+      <section class="auth-setup" id="profile-setup" hidden aria-labelledby="setup-title">
+        <p class="eyebrow">Un último paso</p>
+        <h2 id="setup-title">Completa tu perfil de edu</h2>
+        <p class="auth-setup__lede">
+          Hemos vinculado tu cuenta <strong id="setup-account"></strong>. Los datos que ya existen en ella se
+          autocompletan y quedan bloqueados; los que falten se guardan también en tu cuenta principal.
+        </p>
+        <form class="auth-form" id="profile-form" novalidate>
+          <label class="auth-field">
+            <span>Nombre visible</span>
+            <input name="nickname" type="text" autocomplete="nickname" maxlength="60" />
+            <small class="auth-field__hint" id="setup-name-hint"></small>
+          </label>
+          <label class="auth-field">
+            <span>Fecha de nacimiento</span>
+            <input name="birthDate" type="date" autocomplete="bday" required />
+            <small class="auth-field__hint">
+              Se guardará en tu cuenta gacarbla y se usará para adaptar la web a tu edad.
+            </small>
+          </label>
+          <button class="btn btn--primary btn--lg auth-submit" id="profile-submit" type="submit">
+            Guardar y entrar
+            <svg class="icon" aria-hidden="true"><use href="#i-arrow-right" /></svg>
+          </button>
+          <p class="auth-status" id="profile-status" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
       <section class="auth-success" id="auth-success" hidden aria-labelledby="success-title">
         <span class="auth-success__icon"><svg class="icon" aria-hidden="true"><use href="#i-check" /></svg></span>
         <div>

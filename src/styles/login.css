@@ -175,6 +175,19 @@
   outline-offset: 2px;
 }
 
+.auth-field__hint {
+  color: var(--ink-faint);
+  font-size: 0.74rem;
+  font-weight: 450;
+  line-height: 1.45;
+}
+
+.auth-field input[readonly] {
+  border-style: dashed;
+  background: var(--green-50);
+  color: var(--ink-soft);
+}
+
 .auth-submit {
   width: 100%;
   margin-top: 0.35rem;
@@ -256,6 +269,36 @@
   background: var(--green-50);
 }
 
+.auth-setup {
+  grid-column: 2;
+  min-width: 0;
+  padding: clamp(1.25rem, 3vw, 2rem);
+  border: 1px solid color-mix(in srgb, var(--green-600) 40%, var(--line));
+  border-radius: var(--r-lg);
+  background: var(--paper);
+  box-shadow: var(--shadow-sm), inset 0 3px 0 var(--green-600);
+}
+
+.auth-setup[hidden] {
+  display: none;
+}
+
+.auth-setup .eyebrow {
+  margin-bottom: 0.35rem;
+}
+
+.auth-setup h2 {
+  font-size: clamp(1.6rem, 2.5vw, 2.1rem);
+}
+
+.auth-setup__lede {
+  max-width: 55ch;
+  margin-top: 0.55rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
 .auth-success[hidden] {
   display: none;
 }
@@ -319,6 +362,10 @@
   }
 
   .auth-success {
+    grid-column: 1;
+  }
+
+  .auth-setup {
     grid-column: 1;
   }
 
