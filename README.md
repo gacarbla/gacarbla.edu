@@ -86,6 +86,8 @@ La pantalla `/login/` tiene dos puertas:
 1. **Cuenta gacarbla (adultos).** Abre la ventana oficial `https://api.gacarbla.es/users/login?popup=1&return=…`. Las credenciales, el MFA y la verificación de email se gestionan en `api.gacarbla.es`; edu no las ve. Si el navegador bloquea la ventana, el acceso continúa en la misma pestaña con el redirect oficial y vuelve a edu con `auth=redirect`. En ambos casos, al volver se restaura la cookie `HttpOnly` con DPoP + WebSocket, se lee `/users/v1/me` y se hace `exchange` a `edu`.
 2. **Alumnado sin cuenta API.** Formulario propio de edu con alias, contraseña y PIN o pregunta de seguridad; usa HPKE y el login de menor documentado. Sigue el mismo sistema visual que la portada.
 
+Si la cuenta principal no tiene fecha de nacimiento, edu no muestra un error de soporte: pide **completar el perfil de edu**. Los datos que ya existen se autocompletan y quedan bloqueados; los que faltan se guardan también en la cuenta principal, de modo que ambos perfiles siguen vinculados y sincronizados.
+
 La API debe autorizar el origen de edu tanto en `CORS_ORIGINS` como en `returnOrigins` de `/users/auth/config`. Además, `session/restore` es same-origin y el refresh está atado al `jkt` del navegador que hizo login; para que el acceso adulto funcione desde edu hace falta un puente de sesión en la API (código de un solo uso canjeado con la clave DPoP de edu, o reemisión de la familia). El detalle está en `docs/API-INTEGRATION.md`.
 
 ## Estilos por edad

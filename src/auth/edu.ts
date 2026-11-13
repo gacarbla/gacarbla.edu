@@ -20,10 +20,23 @@ export interface EduMeData extends EduIdentity {
   notifications?: { email: boolean; push: boolean; digest: 'off' | 'daily' | 'weekly' };
 }
 
-export async function exchangeEdu(): Promise<EduAuthData> {
+export interface EduExchangeInput {
+  alias?: string;
+  birthDate?: string;
+  nickname?: string;
+  language?: string;
+}
+
+export async function exchangeEdu(input: EduExchangeInput = {}): Promise<EduAuthData> {
+  const body: Record<string, string> = {};
+  if (input.alias) body.alias = input.alias;
+  if (input.birthDate) body.birthDate = input.birthDate;
+  if (input.nickname) body.nickname = input.nickname;
+  if (input.language) body.language = input.language;
+
   const data = await apiRequest<EduAuthData>('/edu/v1/auth/exchange', {
     method: 'POST',
-    body: {},
+    body,
     auth: 'users',
   });
   setEduSession(data);
