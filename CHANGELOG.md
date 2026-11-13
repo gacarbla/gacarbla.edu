@@ -7,6 +7,34 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-11-13
+
+### Añadido
+
+- Nuevo login por pasos con una tarjeta persistente, dos puertas de acceso,
+  loader para la cuenta API y verificación del alumnado en dos pasos.
+- Paso de segundo factor (PIN o pregunta) después de validar la contraseña;
+  la API devuelve `EDU_SECOND_FACTOR_REQUIRED` y el método efectivo.
+- Menú de perfil en la esquina superior derecha, con avatar, nombre, flecha y
+  opciones accesibles.
+- Revisión de diseño del equipo de producto, visual, movimiento, psicología,
+  accesibilidad y contenido en `docs/DESIGN-REVIEW-2026-11.md`.
+
+### Cambiado
+
+- Centros deja de ser una pestaña principal y pasa al menú de perfil, en un
+  tono discreto.
+- Nuevo panel con hero, tarjetas de aula, pestañas segmentadas y transiciones
+  suaves; se respeta `prefers-reduced-motion`.
+- El acceso con cuenta mantiene el fallback de redirect y ahora completa la
+  sesión al volver a la misma pestaña.
+
+### Corregido
+
+- El nombre visible de edu sigue siendo independiente del `displayName` de la
+  cuenta API.
+- El alumnado no ve crear aula, centros ni aprobaciones.
+
 ## [0.4.0] - 2026-11-13
 
 ### Añadido
@@ -83,7 +111,8 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 - CI con comprobación de tipos, build y guardia de documentos privados.
 - Despliegue automático en GitHub Pages y workflow de releases.
 
-[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.4.0...HEAD
+[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.5.0...HEAD
+[0.5.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.5.0
 [0.4.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.4.0
 [0.3.2]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.2
 [0.3.1]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.1
