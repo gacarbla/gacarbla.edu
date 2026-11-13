@@ -148,6 +148,7 @@ La pantalla `/login/` comparte tokens, tipografía, botones y tarjetas con la po
 Reglas:
 
 - No se piden credenciales de adultos en edu; se delega en la ventana oficial.
+- Si la cuenta principal no tiene fecha de nacimiento, no se muestra un error de soporte: se abre una pantalla para crear el perfil edu. Los datos existentes se autocompletan y quedan bloqueados; los que faltan se escriben en la cuenta principal. La cuenta principal es la fuente de verdad y nunca se sobrescribe desde edu.
 - El alumnado sí tiene formulario propio, con etiquetas claras, autocompletado y errores específicos.
 - El estilo de edad se aplica al completar el acceso; no hay selector.
 - La API debe autorizar `https://edu.gacarbla.es` en `CORS_ORIGINS` y en `returnOrigins`, y ofrecer un puente de sesión entre orígenes: `session/restore` es same-origin y el refresh está atado al `jkt` del login.

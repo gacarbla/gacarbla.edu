@@ -57,6 +57,16 @@ Rota el refresh y la cookie, pero **no devuelve refresh token**: solo la cookie 
 
 No incluye `login_history` (esa vista es solo del WS). El cliente de edu usa `apiRequestRaw` para esta ruta y mapea `birth_date`/`display_name` al perfil de presentación.
 
+### Alta y sincronización del perfil edu
+
+- Si `users.birthDate` existe, es la fuente de verdad: edu la usa y no permite cambiarla.
+- Si falta, `POST /edu/v1/auth/exchange` devuelve `403 EDU_PROFILE_INCOMPLETE`. El cliente muestra una pantalla para completar el perfil, no un error de soporte.
+- El formulario autocompleta y bloquea lo que ya existe en la cuenta principal. Solo pide lo que falta.
+- Al enviar la fecha, la API la escribe en `users.birthDate` mediante el bus interno `users.v1.edu_profile_sync`, que **solo rellena campos vacíos** y nunca sobrescribe los existentes.
+- El nombre visible sigue la misma regla: si existe en `users.displayName`, se copia al `nickname` de edu y queda bloqueado; si falta y se aporta en edu, se guarda en `users.displayName`.
+- El `ageMode` del perfil edu (`minor`/`adult`) se recalcula en cada exchange a partir de la fecha de la cuenta principal.
+- Después del alta, ambos perfiles siguen vinculados: la cuenta principal manda y edu refleja sus datos.
+
 ### Por qué el popup no basta por sí solo
 
 - `assertSameOrigin` (`src/modules/users/routes.ts`) rechaza cualquier `Origin` distinto de `API_BASE_URL` en `session/persist` y `session/restore`. Desde edu devuelve `403 FORBIDDEN` con «origen no permitido».
