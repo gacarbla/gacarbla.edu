@@ -218,6 +218,16 @@ export interface Comment {
   deletedAt: string | null;
 }
 
+export interface SearchResult {
+  pageId: string;
+  classroomId: string;
+  title: string;
+  slug: string;
+  status: 'draft' | 'published';
+  updatedAt: string;
+  snippet: string;
+}
+
 export async function getMe(): Promise<EduMe> {
   return apiRequest<EduMe>('/edu/v1/me', { auth: 'edu' });
 }
@@ -459,6 +469,15 @@ export async function getPageHtml(pageId: string): Promise<string> {
   return apiRequestText(`/edu/v1/pages/${encodeURIComponent(pageId)}/export?format=html`, {
     auth: 'edu',
   });
+}
+
+export async function searchContent(query: string, classroomId?: string): Promise<SearchResult[]> {
+  const params = new URLSearchParams({ q: query });
+  if (classroomId) params.set('classroomId', classroomId);
+  const data = await apiRequest<{ results: SearchResult[] }>(`/edu/v1/search?${params.toString()}`, {
+    auth: 'edu',
+  });
+  return data.results;
 }
 
 export async function listPageComments(pageId: string): Promise<Comment[]> {
