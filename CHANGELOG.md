@@ -7,6 +7,27 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-11-13
+
+### Añadido
+
+- Aplicación de aulas en `/app/`: panel, creación y edición de aulas, temario
+  con carpetas y páginas Markdown, comentarios, publicación, personas,
+  invitaciones, ejercicios, boletín, mensajes, aprobaciones y centros.
+- Aceptación de invitaciones en `/join/?code=…`.
+- Persistencia de la sesión edu en `sessionStorage` (solo refresh token) y
+  restauración con DPoP.
+- Acceso con `next` para volver a la app o a una invitación después del login.
+- Formulario de solicitud del programa para centros.
+- Enlace de creación de cuenta en la ventana oficial de la API.
+
+### Cambiado
+
+- El nombre visible de edu es independiente del `displayName` de la cuenta
+  API; solo se sincroniza la fecha de nacimiento que falte.
+- La portada enlaza los CTAs de creación y acceso a la aplicación real.
+- La pantalla de perfil ya no bloquea el nombre visible de edu.
+
 ## [0.2.0] - 2026-11-13
 
 ### Añadido
@@ -39,6 +60,7 @@ versionado semántico [SemVer](https://semver.org/lang/es/).
 - CI con comprobación de tipos, build y guardia de documentos privados.
 - Despliegue automático en GitHub Pages y workflow de releases.
 
-[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/gacarbla/gacarbla.edu/compare/v0.3.0...HEAD
+[0.3.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.3.0
 [0.2.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.2.0
 [0.1.0]: https://github.com/gacarbla/gacarbla.edu/releases/tag/v0.1.0
