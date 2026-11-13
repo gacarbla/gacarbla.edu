@@ -423,10 +423,31 @@ const renderCredentials = (): void => {
     }
     state.alias = alias;
     state.password = password;
+
+    let legacy = false;
+    try {
+      legacy = sessionStorage.getItem('gacarbla.edu.legacyLearnerLogin') === '1';
+    } catch {
+      legacy = false;
+    }
+    if (legacy) {
+      state.factors = ['pin', 'security_answer'];
+      state.fallbackMethods = true;
+      state.question = null;
+      state.step = 'method';
+      showStep();
+      return;
+    }
+
     setBusy(submit, true);
     try {
       const result = await identifyLearner({ alias, password });
       if ('needsSecondFactor' in result) {
+        try {
+          sessionStorage.removeItem('gacarbla.edu.legacyLearnerLogin');
+        } catch {
+          /* sin sessionStorage */
+        }
         state.factors = result.factors.length > 0 ? result.factors : ['pin', 'security_answer'];
         state.question = result.question ?? null;
         state.fallbackMethods = result.factors.length === 0;
@@ -434,13 +455,23 @@ const renderCredentials = (): void => {
         showStep();
         return;
       }
+      try {
+        sessionStorage.removeItem('gacarbla.edu.legacyLearnerLogin');
+      } catch {
+        /* sin sessionStorage */
+      }
       showSuccess();
     } catch (error) {
       if (isApiError(error) && error.code === 'EDU_LOGIN_INVALID') {
+        try {
+          sessionStorage.setItem('gacarbla.edu.legacyLearnerLogin', '1');
+        } catch {
+          /* sin sessionStorage */
+        }
         if (alertHolder) {
           alertHolder.innerHTML = `
-            ${alertBox('El alias o la contraseña no son correctos.')}
-            <button class="login-link" type="button" id="use-second-step">¿Tu contraseña es correcta? Continuar con mi segundo paso</button>
+            ${alertBox('No hemos podido validar el alias y la contraseña. Si son correctos, continúa con tu segundo paso.')}
+            <button class="login-link" type="button" id="use-second-step">Continuar con mi segundo paso</button>
           `;
           alertHolder.querySelector('#use-second-step')?.addEventListener('click', () => {
             state.factors = ['pin', 'security_answer'];
