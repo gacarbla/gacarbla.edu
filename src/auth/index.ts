@@ -4,7 +4,7 @@ import { exchangeEdu, loginLearner, logoutEdu, refreshEdu, type LearnerLoginInpu
 import { openUsersLoginPopup, PopupBlockedError, redirectToUsersLogin } from './popup';
 import { clearAllSessions, getUsersBirthDate, session, setUsersProfile } from './session';
 import type { EduAuthData, UsersMeRestView } from './types';
-import { getUsersMe, logoutUsers, refreshUsers, restoreUsersSession } from './users';
+import { getUsersMe, logoutUsers, refreshUsers, restoreUsersSession, updateUsersProfile } from './users';
 
 export interface AdultLoginData {
   me: UsersMeRestView;
@@ -99,15 +99,21 @@ export async function completeAdultProfile(
   me: UsersMeRestView,
   input: AdultProfileInput,
 ): Promise<AdultLoginData> {
-  const edu = await exchangeEdu({
+  const nickname = input.nickname?.trim();
+
+  // Primero se completa la cuenta principal con lo que faltaba. Así el
+  // exchange (y cualquier otra app vinculada) ve el dato ya sincronizado.
+  await updateUsersProfile({
     birthDate: input.birthDate,
-    ...(input.nickname ? { nickname: input.nickname } : {}),
+    ...(nickname && !me.display_name ? { displayName: nickname } : {}),
   });
+
+  const edu = await exchangeEdu();
 
   const updatedMe: UsersMeRestView = {
     ...me,
     birth_date: input.birthDate,
-    ...(input.nickname && !me.display_name ? { display_name: input.nickname } : {}),
+    ...(nickname && !me.display_name ? { display_name: nickname } : {}),
   };
   applyUsersMe(updatedMe);
 
