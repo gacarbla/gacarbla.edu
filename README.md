@@ -22,12 +22,13 @@ La web **no tiene cursos públicos ni catálogo**. No hay un feed que explorar: 
 | Modelo de aulas privadas | Reflejado en toda la portada |
 | Estilos por edad | Implementados; se aplican tras identificar a la persona |
 | Selector de edad en la portada | **No existe**, por decisión de producto |
-| Límites y programa para centros | Reglas explicadas; pendientes de implementar en la API |
-| Capa de autenticación API | Implementada en local: dispositivo, DPoP, HPKE, WS, sesiones y refresh |
+| Límites y programa para centros | Reglas en la API y formulario de solicitud en `/app/#/centros` |
+| Capa de autenticación API | Implementada: dispositivo, DPoP, HPKE, WS, sesiones, refresh y restauración en la pestaña |
 | Acceso de adultos | Implementado: ventana oficial de `api.gacarbla.es/users/login` + restauración de cookie |
 | Acceso de alumnado sin cuenta API | Implementado: formulario propio en `/login/` con alias, contraseña y PIN/pregunta |
-| Registro de cuentas adultas | Pendiente; la ventana de API ya tiene su propio flujo |
-| Invitaciones y aulas reales | Pendientes de la interfaz y del CORS de producción |
+| Registro de cuentas adultas | Se hace en la ventana oficial de `api.gacarbla.es`; enlazado desde el acceso |
+| Aplicación de aulas | Implementada en `/app/`: temario, personas, invitaciones, ejercicios, boletín, mensajes, aprobaciones y centros |
+| Invitaciones y aulas reales | Implementadas: enlaces `/join/?code=…` y aceptación con sesión edu |
 | Despliegue estático | GitHub Pages desde `main`, con Actions y dominio `edu.gacarbla.es` |
 
 ## Producto
@@ -86,9 +87,27 @@ La pantalla `/login/` tiene dos puertas:
 1. **Cuenta gacarbla (adultos).** Abre la ventana oficial `https://api.gacarbla.es/users/login?popup=1&return=…`. Las credenciales, el MFA y la verificación de email se gestionan en `api.gacarbla.es`; edu no las ve. Si el navegador bloquea la ventana, el acceso continúa en la misma pestaña con el redirect oficial y vuelve a edu con `auth=redirect`. En ambos casos, al volver se restaura la cookie `HttpOnly` con DPoP + WebSocket, se lee `/users/v1/me` y se hace `exchange` a `edu`.
 2. **Alumnado sin cuenta API.** Formulario propio de edu con alias, contraseña y PIN o pregunta de seguridad; usa HPKE y el login de menor documentado. Sigue el mismo sistema visual que la portada.
 
-Si la cuenta principal no tiene fecha de nacimiento, edu no muestra un error de soporte: pide **completar el perfil de edu**. Los datos que ya existen se autocompletan y quedan bloqueados; los que faltan se guardan también en la cuenta principal, de modo que ambos perfiles siguen vinculados y sincronizados.
+Si la cuenta principal no tiene fecha de nacimiento, edu no muestra un error de soporte: pide **completar el perfil de edu**. La fecha se autocompleta y queda bloqueada; el **nombre visible de edu es independiente** y puede ser distinto del nombre o apodo de la cuenta principal. Los datos legales que faltan se guardan en la cuenta principal, de modo que ambos perfiles siguen vinculados y sincronizados.
 
 La API debe autorizar el origen de edu tanto en `CORS_ORIGINS` como en `returnOrigins` de `/users/auth/config`. Además, `session/restore` es same-origin y el refresh está atado al `jkt` del navegador que hizo login; para que el acceso adulto funcione desde edu hace falta un puente de sesión en la API (código de un solo uso canjeado con la clave DPoP de edu, o reemisión de la familia). El detalle está en `docs/API-INTEGRATION.md`.
+
+## Aplicación de aulas
+
+La app vive en **`/app/`** y requiere sesión. Usa las mismas claves visuales y los estilos por edad de la portada.
+
+- **Mis aulas:** lista de aulas, creación de aula personal y acceso a cada aula.
+- **Temario:** carpetas, páginas Markdown, edición con versiones, publicación/despublicación, duplicado, borrado y comentarios.
+- **Personas:** censo, cambios de rol, expulsión, invitaciones con enlace `/join/?code=…` y revocación.
+- **Ejercicios:** creación de opción múltiple, verdadero/falso y respuesta corta; intentos del alumnado y corrección automática.
+- **Boletín:** progreso, intentos, notas manuales y nota ponderada.
+- **Mensajes:** hilos alumno-docente y tutor-docente.
+- **Aprobaciones:** el tutor revisa y responde las acciones sensibles de un menor.
+- **Centros:** formulario de solicitud del programa para centros.
+- **Perfil:** alias de edu, nombre visible independiente de la cuenta API y preferencias de notificación.
+
+La sesión edu se guarda en `sessionStorage` solo con el refresh token (nunca el access) y se rota con DPoP. El nombre visible de edu es independiente del `displayName` de la cuenta API: la mayoría de cuentas usan apodos y edu permite otro nombre.
+
+La portada enlaza los CTAs de creación a `/login/?next=/app/`; los enlaces de invitación llevan a `/join/?code=…`.
 
 ## Estilos por edad
 
