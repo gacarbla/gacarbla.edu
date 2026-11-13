@@ -411,7 +411,8 @@ const renderDashboard = async (token: number): Promise<void> => {
   if (token !== renderToken) return;
   const me = state.me!;
   const name = me.nickname?.trim() || me.alias;
-  const canCreate = me.kind !== 'learner';
+  const canCreate = me.kind === 'profile';
+  const isCenter = me.kind === 'center';
 
   const cards = classrooms
     .map((classroom) => `
@@ -455,9 +456,11 @@ const renderDashboard = async (token: number): Promise<void> => {
         ? `<section class="panel"><div class="empty">
             <span class="empty__icon" aria-hidden="true">${iconEmpty()}</span>
             <h3>${canCreate ? 'Aún no tienes aulas.' : 'Aún no estás en ningún aula.'}</h3>
-            <p>${canCreate
-              ? 'Crea tu primera aula privada y comparte una invitación. Si te han invitado, abre el enlace que te envió tu docente.'
-              : 'Abre el enlace de invitación que te dio tu docente. Cuando lo aceptes, el aula aparecerá aquí.'}</p>
+            <p>${isCenter
+              ? 'La gestión de las aulas de centro estará disponible desde el panel del centro. Mientras tanto, puedes solicitar información desde el menú de perfil.'
+              : canCreate
+                ? 'Crea tu primera aula privada y comparte una invitación. Si te han invitado, abre el enlace que te envió tu docente.'
+                : 'Abre el enlace de invitación que te dio tu docente. Cuando lo aceptes, el aula aparecerá aquí.'}</p>
             ${canCreate ? '<p><button class="btn btn--primary" type="button" id="empty-create">Crear mi aula</button></p>' : ''}
           </div></section>`
         : `<section class="classroom-grid" aria-label="Tus aulas">${cards}</section>`
